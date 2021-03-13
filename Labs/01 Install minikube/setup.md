@@ -54,8 +54,9 @@ verfiy ArgoCD:
 kubectl get pods -n argocd
 ```
 To deploy our manifests to the cluster we are using the app of apps pattern. For that we have to create a new Application, which manages all other applications (including Argo CD):
-
+```
 kubectl apply -f clusters/apps/dev.yaml
+```
 
 
 #### <font color='red'>1.1.3  Ingress </font>
