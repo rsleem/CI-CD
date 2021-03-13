@@ -21,16 +21,32 @@ to delete  minikube:
 minikube delete
 ```
 
+---
+
 Pre-requisties:
 * Kustomize is a standalone tool to customize Kubernetes objects through a kustomization file. Since 1.14, Kubectl also supports the management of Kubernetes objects using a kustomization file.
+
 ensure kustomize has been installed:
 ```
 sudo snap install kustomize 
 ```
+* Helm is a package manager for Kubernetes that allows developers and operators to more easily package, configure, and deploy applications and services onto Kubernetes clusters.
+ensure helm is installed:
+```
+curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3
+```
+change permission so can execute:
+```
+chmod 700 get_helm.sh
+```
+install helm:
+```
+./get_helm.sh
+```
 
+---
 
-
-#### <font color='red'>1.1.1  Install Dev minikube Cluster + ArgoCD </font>
+#### <font color='red'>1.1.1  Install Dev minikube Cluster + Ingress </font>
 
 start minikube:
 ```
@@ -40,6 +56,11 @@ enable nginx controller:
 ```
 minikube addons enable ingress --profile=dev
 ```
+add our Ingresses to the /etc/hosts file:
+```
+sudo echo "`minikube ip --profile=dev` argocd-dev.fake grafana-dev.fake prometheus-dev.fake tekton-dev.fake server-dev.fake" | sudo tee -a /etc/hosts
+```
+
 
 #### <font color='red'>1.1.2  Install ArgoCD </font>
 
@@ -58,13 +79,6 @@ To deploy our manifests to the cluster we are using the app of apps pattern. For
 kubectl apply -f clusters/apps/dev.yaml
 ```
 
-
-#### <font color='red'>1.1.3  Ingress </font>
-
-add our Ingresses to the /etc/hosts file:
-```
-sudo echo "`minikube ip --profile=dev` argocd-dev.fake grafana-dev.fake prometheus-dev.fake tekton-dev.fake server-dev.fake" | sudo tee -a /etc/hosts
-```
 browse to ArgoCD > http://argocd-dev.fake
 
 user: admin
