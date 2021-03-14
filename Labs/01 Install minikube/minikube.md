@@ -99,7 +99,7 @@ Note: In the UI of Argo CD we can now see all deployed applications:
 
 ---
 
-#### <font color='red'>1.1.2  Install ArgoCD </font>
+#### <font color='red'>1.1.3 Monitoring </font>
 * Deploys the Prometheus Stack via the kube-prometheus-stack Helm chart.
 
 * Prometheus is available at prometheus-dev.fake and Grafana at grafana-dev.fake
@@ -122,7 +122,7 @@ log into Grafana:
 
 ---
 
-#### <font color='red'>1.1.3  Install Tekton </font>
+#### <font color='red'>1.1.4  Install Tekton </font>
 We are using Tekton Pipelines to build our example application and to update the deployed Docker image. The required tasks and pipelines are deployed by Argo CD, but we have to manually provide the credentials for Docker Hub and GitHub. 
 
 create the secrets:
