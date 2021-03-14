@@ -30,6 +30,7 @@ ensure kustomize has been installed:
 ```
 sudo snap install kustomize 
 ```
+
 * Helm is a package manager for Kubernetes that allows developers and operators to more easily package, configure, and deploy applications and services onto Kubernetes clusters.
 ensure helm is installed:
 ```
@@ -43,6 +44,12 @@ install helm:
 ```
 ./get_helm.sh
 ```
+
+* GitOps
+
+
+* Docker Hub
+
 
 ---
 
