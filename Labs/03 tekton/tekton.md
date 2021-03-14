@@ -4,7 +4,7 @@ Lab demonstrates a possible GitOps workflow using Argo CD and Tekton. We are usi
 In this lab we're going to:
 * install Dev minikube cluster
 * enable Ingress controller
-* install ArgoCD
+
 
 ---
 
