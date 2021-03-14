@@ -1,0 +1,27 @@
+piVersion: tekton.dev/v1beta1
+kind: PipelineRun
+metadata:
+  name: build-and-deploy-dev-1
+  annotations:
+    argocd.argoproj.io/compare-options: IgnoreExtraneous
+spec:
+  pipelineRef:
+    name: build-and-deploy-pipeline
+  params:
+    - name: gitUrl
+      value: https://github.com/jporeilly/gitops-using-argo-cd-and-tekton
+    - name: gitRevision
+      value: dev
+    - name: imageUrl
+      value: jporeilly/gitops-using-argo-cd-and-tekton
+    - name: serviceName
+      value: server
+    - name: filePath
+      value: clusters/server/dev/server-deploy.yaml
+    - name: yamlField
+      value: spec.template.spec.containers[0].image
+  serviceAccountName: pipeline-account
+  workspaces:
+    - name: git-source
+      persistentVolumeClaim:
+        claimName: git-source-pvc
