@@ -1,7 +1,9 @@
 ## <font color='red'> 1.2 ArgoCD </font>
 
 
-
+In this lab we're going to:
+* install ArgoCD
+* setup monitoring with Prometheus & Grafana
 
 
 
@@ -33,6 +35,7 @@ kubectl get pods -n argocd -l app.kubernetes.io/name=argocd-server -o name | cut
 Note: In the UI of Argo CD we can now see all deployed applications:
 
 ---
+
 
 #### <font color='red'>1.2.2 Monitoring </font>
 * Deploys the Prometheus Stack via the kube-prometheus-stack Helm chart.
