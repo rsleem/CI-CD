@@ -75,7 +75,7 @@ In this lab we're going to:
 #### <font color='red'>1.2.1  Install ArgoCD </font>
 create namespace argocd:
 ```
-kubectl create namespace argocd:
+kubectl create namespace argocd
 ```
 install ArgoCD:
 ```
@@ -153,7 +153,7 @@ export MINIKUBE_IP=https://$(minikube ip -p k8s-dev):8443
 ```
 Note: This variable sets target cluster API URL.
 create the application record:
-
+```
 argocd app create spring-petclinic --repo https://github.com/jporeilly/ArgoCD-demo.git --path . --dest-server $MINIKUBE_IP --dest-namespace default
 ```
 verify status and configuration of your app:
