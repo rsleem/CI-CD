@@ -56,6 +56,10 @@ minikube k8s-argocd tunnel:
 ```
 minikube -p k8s-argocd tunnel
 ```
+enable ingress:
+```
+minikube addons enable ingress -p k8s-argocd
+```
 confirm that your k8s-argocd context is set correctly:
 ```
 kubectl config use-context argocd-k8s
@@ -86,6 +90,19 @@ verfiy ArgoCD:
 kubectl get pods -n argocd
 ```
 Note: This will take a few minutes..
+
+deploy ingress support:
+```
+kubectl create -n argocd -f 02_argocd-ingress.yaml  --save-config
+```
+Note: Argo CD server in insecure mode and terminate TLS at the Ingress controller.
+
+verify ingress:
+```
+kubectl get ingress -n argocd
+```
+Note: By default, the Argo CD Operator creates two Ingress resources; one for the HTTP API/UI and the other for GRPC
+
 port-forward to expose service on localhost:8080:
 ```
 kubectl port-forward svc/argocd-server -n argocd 8080:443
@@ -136,7 +153,7 @@ tell ArgoCD about your deployment target:
 ```
 argocd cluster add k8s-dev
 ```
-Note: This will add an ArgoCD service account onto the cluster.
+Note: The above command installs a ServiceAccount (argocd-manager), into the kube-system namespace of that kubectl context, and binds the service account to an admin-level ClusterRole. Argo CD uses this service account token to perform its management tasks (i.e. deploy/monitoring).
 
 ---
 
@@ -158,7 +175,7 @@ export MINIKUBE_IP=https://$(minikube ip -p k8s-dev):8443
 Note: This variable sets target cluster API URL.
 create the application record:
 ```
-argocd app create spring-petclinic --repo https://github.com/jporeilly/ArgoCD-demo.git --path . --dest-server $MINIKUBE_IP --dest-namespace default
+argocd app create guestbook --repo https://github.com/jporeilly/ArgoCD-demo.git --path guestbook --dest-server $MINIKUBE_IP --dest-namespace default
 ```
 verify status and configuration of your app:
 ```
@@ -170,11 +187,11 @@ Notice: the STATUS: OutOfSync and HEALTH: Missing. That’s because ArgoCD creat
 
 more detailed view of your application configuration:
 ```
-argocd app get spring-petclinic
+argocd app get guestbook
 ```
 ready to sync your application to your target cluster:
 ```
-argocd app sync spring-petclinic
+argocd app sync guestbook
 ```
 change kubectl contexts to your target cluster:
 ```
@@ -182,7 +199,7 @@ kubectl config use-context k8s-dev
 ```
 port-forward to expose app on localhost:9090:
 ```
-kubectl port-forward svc/spring-petclinic -n default 9090:8080
+kubectl port-forward svc/guestbook -n default 9090:8080
 ```
 
 
