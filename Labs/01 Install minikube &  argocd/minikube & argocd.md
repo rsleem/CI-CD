@@ -53,7 +53,7 @@ kubectl config use-context k8s-argocd
 
 ---
 
-#### <font color='red'> 1.1.2 ArgoCD </font>
+#### <font color='red'> 1.1.2 Install ArgoCD </font>
 ArgoCD is a declarative GitOps tool built to deploy applications to Kubernetes. While the continuous delivery (CD) space is seen by some as crowded these days, ArgoCD does bring some interesting capabilities to the table.
 
 Unlike other tools, ArgoCD is lightweight and easy to configure. It is purpose-built to deploy applications to Kubernetes so it doesn’t have the UI overhead of many tools built to deploy to multiple locations.
@@ -62,7 +62,7 @@ In this lab we're going to:
 * install ArgoCD
 * install ArgoCD CLI
 
-#### <font color='red'>1.2.1  Install ArgoCD </font>
+
 create namespace argocd:
 ```
 kubectl create namespace argocd
@@ -97,7 +97,7 @@ port-forward to expose service on localhost:8080:
 ```
 kubectl port-forward svc/argocd-server -n argocd 8080:443
 ```
-or chnage argocd-server service type to LoadBalancer:
+or change argocd-server service type to LoadBalancer:
 ```
 kubectl patch svc argocd-server -n argocd -p '{"spec": {"type": "LoadBalancer"}}'
 ```
