@@ -44,9 +44,17 @@ start k8s-dev cluster:
 ```
 minikube start -p k8s-dev
 ```
+minikube k8s-dev tunnel:
+```
+minikube -p k8s-dev tunnel
+```
 start k8s-argocd cluster:
 ```
 minikube start -p k8s-argocd
+```
+minikube k8s-argocd tunnel:
+```
+minikube -p k8s-argocd tunnel
 ```
 confirm that your k8s-argocd context is set correctly:
 ```
