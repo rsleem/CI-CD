@@ -1,12 +1,11 @@
-## <font color='red'> 1.1 K8s Cluster </font>
+## <font color='red'> 1.1 ArgoCD </font>
 Lab demonstrates a possible GitOps workflow using Argo CD and Tekton. We are using Argo CD to setup our Kubernetes clusters dev and prod (in the following we will only use the dev cluster) and Tekton to build and update our example application.
 
 In this lab we're going to:
-* install Dev minikube cluster
-* install ArgoCD minikube cluster
+* install k8s-argocd cluster
 * configure to pull image from Docker Hub
 * configure to pull app from GitHub
-* sync app on K8s-dev cluster
+* sync app on k8s-argocd cluster
 
 ---
 
@@ -35,19 +34,10 @@ you will require a GitHub account.
 
 ---
 
-#### <font color='red'>1.1.1  Install Dev & ArgoCD K8s Clusters </font>
-The next step is to create two Kubernetes clusters: 
-* k8s-dev - push your application and run it
+#### <font color='red'> 1.1.1 ArgoCD K8s Cluster </font>
+The next step is to create ArgoCD Kubernetes cluster: 
 * k8s-argocd - install ArgoCD
 
-start k8s-dev cluster:
-```
-minikube start -p k8s-dev
-```
-minikube k8s-dev tunnel:
-```
-minikube -p k8s-dev tunnel
-```
 start k8s-argocd cluster:
 ```
 minikube start -p k8s-argocd
@@ -56,18 +46,14 @@ minikube k8s-argocd tunnel:
 ```
 minikube -p k8s-argocd tunnel
 ```
-enable ingress:
-```
-minikube addons enable ingress -p k8s-argocd
-```
 confirm that your k8s-argocd context is set correctly:
 ```
-kubectl config use-context argocd-k8s
+kubectl config use-context k8s-argocd
 ```
 
 ---
 
-## <font color='red'> 1.2 ArgoCD </font>
+#### <font color='red'> 1.1.2 ArgoCD </font>
 ArgoCD is a declarative GitOps tool built to deploy applications to Kubernetes. While the continuous delivery (CD) space is seen by some as crowded these days, ArgoCD does bring some interesting capabilities to the table.
 
 Unlike other tools, ArgoCD is lightweight and easy to configure. It is purpose-built to deploy applications to Kubernetes so it doesn’t have the UI overhead of many tools built to deploy to multiple locations.
@@ -91,6 +77,10 @@ kubectl get pods -n argocd
 ```
 Note: This will take a few minutes..
 
+if you want to watch:
+```
+kubectl get pod -n argocd --watch
+```
 deploy ingress support:
 ```
 kubectl create -n argocd -f 02_argocd-ingress.yaml  --save-config
