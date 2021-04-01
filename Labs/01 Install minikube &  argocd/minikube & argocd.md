@@ -4,6 +4,9 @@ Lab demonstrates a possible GitOps workflow using Argo CD and Tekton. We are usi
 In this lab we're going to:
 * install Dev minikube cluster
 * install ArgoCD minikube cluster
+* configure to pull image from Docker Hub
+* configure to pull app from GitHub
+* sync app on K8s-dev cluster
 
 ---
 
@@ -143,7 +146,7 @@ export MINIKUBE_IP=https://$(minikube ip -p k8s-dev):8443
 Note: This variable sets target cluster API URL.
 create the application record:
 
-argocd app create spring-petclinic --repo https://github.com/jporeilly/CI-CD.git --path . --dest-server $MINIKUBE_IP --dest-namespace default
+argocd app create spring-petclinic --repo https://github.com/jporeilly/ArgoCD-demo.git --path . --dest-server $MINIKUBE_IP --dest-namespace default
 ```
 verify status and configuration of your app:
 ```
