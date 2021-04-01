@@ -71,7 +71,7 @@ kubectl config use-context k8s-dev
 #### <font color='red'> 1.1.2 Install ArgoCD - Dev K8s Cluster </font>
 install ArgoCD:
 ```
-kustomize build ./clusters/argocd/dev | k apply -f -
+kustomize build clusters/argocd/dev | k apply -f -
 ```
 verify that ArgoCD:
 ```
