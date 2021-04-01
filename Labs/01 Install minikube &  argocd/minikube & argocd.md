@@ -3,7 +3,7 @@ Lab demonstrates a possible GitOps workflow using Argo CD and Tekton. We are usi
 
 In this lab we're going to:
 * install Dev minikube cluster
-* enable Ingress controller
+* install ArgoCD minikube cluster
 
 ---
 
@@ -93,20 +93,89 @@ Note: In the UI of Argo CD we can now see all deployed applications.
 
 ---
 
-
 #### <font color='red'>1.2.2 Install ArgoCD CLI </font>
 
 go to the releases site on GitHub:
-```
-https://github.com/argoproj/argo-cd/releases
 
+  > https://github.com/argoproj/argo-cd/releases
 
 select the correct version:
 
 rename the file and move to $PATH:
 ```
-mv argocd-linux-amd64 argocd && mv argocd /usr/local/bin
+mv argocd-linux-amd64 argocd 
+mv argocd /usr/local/bin
+```
+log into ArgoCD:
+```
+argocd login localhost:8080
+```
+or
+  > http://localhost:8080
+
+if you want to change the password:
+```
+argocd account update-password
+```
+tell ArgoCD about your deployment target:
+```
+argocd cluster add k8s-dev
+```
+Note: This will add an ArgoCD service account onto the cluster.
+
+---
+
+#### <font color='red'>1.2.3 Build Demo Application </font>
+
+---
+
+#### <font color='red'>1.2.4 Add Demo Application to ArgoCD</font>
+
+set up a couple of environment variables:
+```
+export ARGOCD_OPTS='--port-forward-namespace argocd'
+```
+Note: This variable will tell the argocd CLI client where our ArgoCD installation resides
+set minikube dev ip:
+```
+export MINIKUBE_IP=https://$(minikube ip -p k8s-dev):8443
+```
+Note: This variable sets target cluster API URL.
+create the application record:
+
+argocd app create spring-petclinic --repo https://github.com/jporeilly/CI-CD.git --path . --dest-server $MINIKUBE_IP --dest-namespace default
+```
+verify status and configuration of your app:
+```
+argocd app list
+```
+Notice: the STATUS: OutOfSync and HEALTH: Missing. That’s because ArgoCD creates applications with manual triggers by default.  
+
+“Sync” is the terminology ArgoCD uses to describe the application on your target cluster as being up to date with the sources ArgoCD is pulling from. You have set up ArgoCD to monitor the GitHub repository with the configuration files as well as the spring-petclinic container image in Docker Hub. Once the initial sync is completed, a change to either of these sources will cause the status in ArgoCD to change to OutOfSync.
+
+more detailed view of your application configuration:
+```
+argocd app get spring-petclinic
+```
+ready to sync your application to your target cluster:
+```
+argocd app sync spring-petclinic
+```
+change kubectl contexts to your target cluster:
+```
+kubectl config use-context k8s-dev
+```
+port-forward to expose app on localhost:9090:
+```
+kubectl port-forward svc/spring-petclinic -n default 9090:8080
 ```
 
 
----
+
+
+
+
+
+
+
+
