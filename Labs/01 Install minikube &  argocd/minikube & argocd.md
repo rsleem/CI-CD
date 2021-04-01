@@ -81,18 +81,21 @@ install ArgoCD:
 ```
 kubectl apply -n argocd -f 01_install-argocd.yaml
 ```
-Note: this will take a few minutes...
-
 verfiy ArgoCD:
 ```
 kubectl get pods -n argocd
 ```
+Note: This will take a few minutes..
 port-forward to expose service on localhost:8080:
 ```
 kubectl port-forward svc/argocd-server -n argocd 8080:443
 ```
+or chnage argocd-server service type to LoadBalancer:
+```
+kubectl patch svc argocd-server -n argocd -p '{"spec": {"type": "LoadBalancer"}}'
+```
 
-browse to ArgoCD > http://localhost:8080
+  > browse to ArgoCD:  http://localhost:8080
 
 user: admin
 
@@ -110,12 +113,13 @@ go to the releases site on GitHub:
 
   > https://github.com/argoproj/argo-cd/releases
 
-select the correct version:
+select the correct version (currently Tags:1.8.7):
 
 rename the file and move to $PATH:
 ```
+cd Downloads
 mv argocd-linux-amd64 argocd 
-mv argocd /usr/local/bin
+sudo mv argocd /usr/local/bin
 ```
 log into ArgoCD:
 ```
