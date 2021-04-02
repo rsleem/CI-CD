@@ -25,13 +25,7 @@ minikube delete
 ---
 
 Pre-requisties:
-* GitOps is a way to do Kubernetes cluster management and application delivery.  It works by using Git as a single source of truth for declarative infrastructure and applications. With GitOps, the use of software agents can alert on any divergence between Git with what's running in a cluster, and if there's a difference, Kubernetes reconcilers automatically update or rollback the cluster depending on the case. With Git at the center of your delivery pipelines, developers use familiar tools to make pull requests to accelerate and simplify both application deployments and operations tasks to Kubernetes.
-
-you will require a GitHub account.
-
-* Docker Hub
-
-* kustomize - Snap
+* Kustomize lets you lets you create an entire Kubernetes application out of individual pieces — without touching the YAML configuration filesfor the individual components.  For example, you can combine pieces from different sources, keep your customizations — or kustomizations, as the case may be — in source control, and create overlays for specific situations. And it is part of Kubernetes 1.14 or later. Kustomize enables you to do that by creating a file that ties everything together, or optionally includes “overrides” for individual parameters.
 
 ensure Snap is installed:
 ```
@@ -45,6 +39,12 @@ install Kustomize:
 ```
 sudo snap install kustomize
 ```
+
+* GitOps is a way to do Kubernetes cluster management and application delivery.  It works by using Git as a single source of truth for declarative infrastructure and applications. With GitOps, the use of software agents can alert on any divergence between Git with what's running in a cluster, and if there's a difference, Kubernetes reconcilers automatically update or rollback the cluster depending on the case. With Git at the center of your delivery pipelines, developers use familiar tools to make pull requests to accelerate and simplify both application deployments and operations tasks to Kubernetes.
+
+you will require a GitHub account.
+
+* Docker Hub
 
 ---
 
@@ -71,7 +71,7 @@ kubectl config use-context k8s-dev
 #### <font color='red'> 1.1.2 Install ArgoCD - Dev K8s Cluster </font>
 install ArgoCD:
 ```
-kustomize build ./clusters/argocd/dev | k apply -f -
+kustomize build clusters/argocd/dev | k apply -f -
 ```
 verify that ArgoCD:
 ```
@@ -80,7 +80,7 @@ kubectl get pods -n argocd
 deploy our manifests to the cluster using the app of apps pattern. 
 create a new Application, which manages all other applications (including ArgoCD):
 ```
-kubectl apply -f ./clusters/apps/dev.yaml
+kubectl apply -f clusters/apps/dev.yaml
 ```
 add our Ingresses to the /etc/hosts file:
 ```
