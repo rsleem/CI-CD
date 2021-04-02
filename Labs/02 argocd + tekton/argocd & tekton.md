@@ -33,7 +33,6 @@ sudo yum install epel-release
 sudo yum install snapd
 sudo systemctl enable --now snapd.socket
 sudo ln -s /var/lib/snapd/snap /snap
-sudo snap install kustomize
 ```
 install Kustomize:
 ```
@@ -75,16 +74,16 @@ kustomize build clusters/argocd/dev | k apply -f -
 ```
 verify that ArgoCD:
 ```
-kubectl get pods -n argocd
+kgpo -n argocd
 ```
 deploy our manifests to the cluster using the app of apps pattern. 
 create a new Application, which manages all other applications (including ArgoCD):
 ```
-kubectl apply -f clusters/apps/dev.yaml
+k apply -f clusters/apps/dev.yaml
 ```
 add our Ingresses to the /etc/hosts file:
 ```
-sudo echo "`minikube ip --profile=dev` argocd-dev.fake grafana-dev.fake prometheus-dev.fake tekton-dev.fake server-dev.fake" | sudo tee -a /etc/hosts
+sudo echo "`minikube ip --profile=k8s-dev` argocd-dev.fake grafana-dev.fake prometheus-dev.fake tekton-dev.fake server-dev.fake" | sudo tee -a /etc/hosts
 ```
 
-open in browser: > http://argocd-dev.fake
+  > open in browser: http://argocd-dev.fake
