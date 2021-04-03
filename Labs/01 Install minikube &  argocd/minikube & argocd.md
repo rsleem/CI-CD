@@ -3,8 +3,7 @@ Lab demonstrates a possible GitOps workflow using Argo CD and Tekton. We are usi
 
 In this lab we're going to:
 * install k8s-argocd cluster
-* configure to pull image from Docker Hub
-* configure to pull app from GitHub
+* configure to pull apps from GitHub
 * sync app on k8s-argocd cluster
 
 ---
@@ -86,7 +85,7 @@ verify deployed ArgoCD:
 kgpo -n argocd
 ```
 deploy our manifests to the cluster using the app of apps pattern. 
-create a new Application, which manages all other applications (including ArgoCD):
+create a new application, which manages all other applications (including ArgoCD):
 ```
 k apply -f clusters/apps/dev.yaml
 ```
