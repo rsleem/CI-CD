@@ -9,7 +9,8 @@ spec:
       paths:
       - path: /
         backend:
-          serviceName: argocd-server
+          service
+            name: argocd-server
           servicePort: htpps
   tls:
     - hosts:
