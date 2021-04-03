@@ -11,7 +11,8 @@ spec:
         backend:
           service
             name: argocd-server
-          servicePort: htpps
+            port: 
+              number: 443
   tls:
     - hosts:
         - argocd-dev.fake
