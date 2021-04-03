@@ -88,11 +88,11 @@ kgpo -n argocd
 deploy our manifests to the cluster using the app of apps pattern. 
 create a new Application, which manages all other applications (including ArgoCD):
 ```
-ka -f clusters/apps/dev.yaml
+k apply -f clusters/apps/dev.yaml
 ```
 add our Ingresses to the /etc/hosts file:
 ```
-sudo echo "`minikube ip --profile=dev` argocd-dev.fake grafana-dev.fake prometheus-dev.fake tekton-dev.fake server-dev.fake" | sudo tee -a /etc/hosts
+sudo echo "`minikube ip -p k8s-dev` argocd-dev.fake grafana-dev.fake prometheus-dev.fake tekton-dev.fake server-dev.fake" | sudo tee -a /etc/hosts
 ```
 
 open in browser: > http://argocd-dev.fake
