@@ -1,4 +1,4 @@
-apiVersion: extensions/v1beta1
+apiVersion: extensions/v1
 kind: Ingress
 metadata:
   name: argo-cd-ui
@@ -9,8 +9,10 @@ spec:
         paths:
           - path: /
             backend:
-              serviceName: argocd-server
-              servicePort: https
+              service: 
+                name: argocd-server
+                port: 
+                 number: 443
   tls:
     - hosts:
         - argocd-prod.fake
