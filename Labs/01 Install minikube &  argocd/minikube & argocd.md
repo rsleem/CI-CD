@@ -59,6 +59,10 @@ enable ingress:
 ```
 minikube addons enable ingress -p k8s-dev
 ```
+verify ingress:
+```
+ksysgpo
+```
 confirm that your k8s-dev context is set correctly:
 ```
 kubectl config use-context k8s-dev
