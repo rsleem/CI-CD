@@ -127,7 +127,7 @@ import dashboard for ArgoCD:
 
 The dashboard can be found in the GitHub repository of the Argo CD project at [https://github.com/argoproj/argo-cd/blob/master/examples/dashboard.json](https://github.com/argoproj/argo-cd/blob/master/examples/dashboard.json).
 
-
+---
 
 #### <font color='red'>1.2.2 Install ArgoCD CLI </font>
 
