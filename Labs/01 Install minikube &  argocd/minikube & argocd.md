@@ -3,8 +3,9 @@ Lab demonstrates a possible GitOps workflow using Argo CD and Tekton. We are usi
 
 In this lab we're going to:
 * install k8s-argocd cluster
-* configure to pull apps from GitHub
-* sync app on k8s-argocd cluster
+* configure to pull apps from GitHub - GitOps
+* sync apps on k8s-argocd cluster
+* metrics in Grafana & Prometheus
 
 ---
 
@@ -70,13 +71,14 @@ kubectl config use-context k8s-dev
 
 ---
 
-#### <font color='red'> 1.1.2 Install ArgoCD </font>
+#### <font color='red'> 1.1.2 Install ArgoCD + Apps </font>
 ArgoCD is a declarative GitOps tool built to deploy applications to Kubernetes. While the continuous delivery (CD) space is seen by some as crowded these days, ArgoCD does bring some interesting capabilities to the table.
 
 Unlike other tools, ArgoCD is lightweight and easy to configure. It is purpose-built to deploy applications to Kubernetes so it doesn’t have the UI overhead of many tools built to deploy to multiple locations.
 
 In this lab we're going to:
 * install ArgoCD
+* deploys Prometheues Stack via kube-prometheus-stack helm chart
 * install ArgoCD CLI
 
 
@@ -97,6 +99,7 @@ add our Ingresses to the /etc/hosts file:
 ```
 sudo echo "`minikube ip -p k8s-dev` argocd-dev.fake grafana-dev.fake prometheus-dev.fake tekton-dev.fake server-dev.fake" | sudo tee -a /etc/hosts
 ```
+Note: just execute once. check /etc/hosts file.
 
   > open in browser: http://argocd-dev.fake
 
@@ -109,6 +112,22 @@ k -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}
 Note: In the UI of Argo CD we can now see all deployed applications.
 
 ---
+
+#### <font color='red'> 1.1.3 Install ArgoCD </font>
+This example also deploys the Prometheus Stack via the [kube-prometheus-stack](https://github.com/prometheus-community/helm-charts/tree/main/charts/kube-prometheus-stack) Helm chart. We are using the [Flux Helm Operator](https://docs.fluxcd.io/projects/helm-operator/en/stable/) instead of the Argo CD to deploy the Helm chart. When the Helm chart was successfully synced Prometheus is available at [prometheus-dev.fake](https://prometheus-dev.fake) and Grafana at [grafana-dev.fake](https://grafana-dev.fake).
+
+log into Grafana:
+
+  > in browser: grafana-dev.fake
+
+user: admin  
+password: admin
+
+import dashboard for ArgoCD:
+
+The dashboard can be found in the GitHub repository of the Argo CD project at [https://github.com/argoproj/argo-cd/blob/master/examples/dashboard.json](https://github.com/argoproj/argo-cd/blob/master/examples/dashboard.json).
+
+
 
 #### <font color='red'>1.2.2 Install ArgoCD CLI </font>
 
