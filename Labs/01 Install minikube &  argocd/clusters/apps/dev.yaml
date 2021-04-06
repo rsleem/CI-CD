@@ -15,6 +15,6 @@ spec:
       prune: true
       selfHeal: true
   source:
-    repoURL: https://github.com/jporeilly/GitOps.git
+    repoURL: https://github.com/jporeilly/gitops.git
     targetRevision: dev
     path: clusters/apps/dev
