@@ -118,7 +118,7 @@ This example also deploys the Prometheus Stack via the [kube-prometheus-stack](h
 
 log into Grafana:
 
-  > in browser: grafana-dev.fake
+  > in browser: http://grafana-dev.fake
 
 user: admin  
 password: admin
