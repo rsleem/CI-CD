@@ -8,4 +8,4 @@ spec:
     spec:
       containers:
         - name: server
-          image: jporeilly/gitops:latest
+          image: jporeilly/GitOps:dev-4b487724fc96e0b2cd026550e06b420cb61d4ece
