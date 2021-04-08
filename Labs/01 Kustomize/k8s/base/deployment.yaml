@@ -1,29 +1,18 @@
-apiVersion: apps/v1 
+apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: wordpress
-  labels:
-    app: wordpress
+  name: helloweb-deployment
 spec:
   selector:
     matchLabels:
-      app: wordpress
-  strategy:
-    type: Recreate
+      app: helloweb
   template:
     metadata:
       labels:
-        app: wordpress
+        app: helloweb
     spec:
       containers:
-      - image: wordpress:4.8-apache
-        name: wordpress
+      - name: hello-app
+        image: gcr.io/google-samples/hello-app:1.0
         ports:
-        - containerPort: 80
-          name: wordpress
-        volumeMounts:
-        - name: wordpress-persistent-storage
-          mountPath: /var/www/html
-      volumes:
-      - name: wordpress-persistent-storage
-        emptyDir: {}
+        - containerPort: 8080
