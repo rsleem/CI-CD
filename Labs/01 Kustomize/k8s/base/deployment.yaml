@@ -1,20 +1,29 @@
-apiVersion: apps/v1
+apiVersion: apps/v1 
 kind: Deployment
 metadata:
-  name: sl-demo-app
+  name: wordpress
+  labels:
+    app: wordpress
 spec:
   selector:
     matchLabels:
-      app: sl-demo-app
+      app: wordpress
+  strategy:
+    type: Recreate
   template:
     metadata:
       labels:
-        app: sl-demo-app
+        app: wordpress
     spec:
       containers:
-      - name: app
-        image: foo/bar:latest
+      - image: wordpress:4.8-apache
+        name: wordpress
         ports:
-        - name: http
-          containerPort: 8080
-          protocol: TCP
+        - containerPort: 80
+          name: wordpress
+        volumeMounts:
+        - name: wordpress-persistent-storage
+          mountPath: /var/www/html
+      volumes:
+      - name: wordpress-persistent-storage
+        emptyDir: {}

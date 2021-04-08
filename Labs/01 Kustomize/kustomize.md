@@ -1,8 +1,11 @@
-## <font color='red'> 1.1 ArgoCD </font>
-Lab demonstrates a possible GitOps workflow using Argo CD and Tekton. We are using Argo CD to setup our Kubernetes clusters dev and prod (in the following we will only use the dev cluster) and Tekton to build and update our example application.
+## <font color='red'> 1.1 Kustomize </font>
+Kustomize lets you lets you create an entire Kubernetes application out of individual pieces — without touching the YAML configuration filesfor the individual components.  For example, you can combine pieces from different sources, keep your customizations — or kustomizations, as the case may be — in source control, and create overlays for specific situations. 
+
+
+And it is part of Kubernetes 1.14 or later. Kustomize enables you to do that by creating a file that ties everything together, or optionally includes “overrides” for individual parameters.
 
 In this lab we're going to:
-* install k8s-argocd cluster
+* install minikube
 * configure to pull apps from GitHub - GitOps
 * sync apps on k8s-argocd cluster
 * metrics in Grafana & Prometheus
@@ -24,20 +27,6 @@ minikube delete
 
 ---
 
-Pre-requisties:
-* Kustomize lets you lets you create an entire Kubernetes application out of individual pieces — without touching the YAML configuration filesfor the individual components.  For example, you can combine pieces from different sources, keep your customizations — or kustomizations, as the case may be — in source control, and create overlays for specific situations. And it is part of Kubernetes 1.14 or later. Kustomize enables you to do that by creating a file that ties everything together, or optionally includes “overrides” for individual parameters.
-
-ensure Snap is installed:
-```
-sudo yum install epel-release
-sudo yum install snapd
-sudo systemctl enable --now snapd.socket
-sudo ln -s /var/lib/snapd/snap /snap
-```
-install Kustomize:
-```
-sudo snap install kustomize
-```
 
 * GitOps is a way to do Kubernetes cluster management and application delivery.  It works by using Git as a single source of truth for declarative infrastructure and applications. With GitOps, the use of software agents can alert on any divergence between Git with what's running in a cluster, and if there's a difference, Kubernetes reconcilers automatically update or rollback the cluster depending on the case. With Git at the center of your delivery pipelines, developers use familiar tools to make pull requests to accelerate and simplify both application deployments and operations tasks to Kubernetes.
 
