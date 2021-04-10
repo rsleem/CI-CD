@@ -14,4 +14,4 @@ resources:
 - namespace.yaml
 - deployment.yaml
 - service.yaml
-- configMap.yaml
+- configmap.yaml

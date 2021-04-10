@@ -29,7 +29,7 @@ minikube delete
 
 
 #### <font color='red'> 1.1.1 K8s Cluster </font>
-The next step is to create k8s-dev Kubernetes cluster: 
+The next step is to create Kubernetes cluster: 
 * install minikube
 * check kustomize
 
@@ -85,9 +85,9 @@ to view the concatenated output:
 ```
 kustomize build base
 ```
-switch to 01 kustomize directory:
+deploy app:
 ```
-kustomize build helloworld/base | k apply -f -
+kustomize build base | k apply -f -
 ```
 verify deployment:
 ```
@@ -124,9 +124,9 @@ tree staging
 ```
 view the map.yaml # changing the configmap values
 
-switch to 01 kustomize directory:
+switch to helloworld directory:
 ```
-kustomize build helloworld/overlays/staging | kubectl apply -f -
+kustomize build overlays/staging | kubectl apply -f -
 ```
 verify deployment:
 ```
