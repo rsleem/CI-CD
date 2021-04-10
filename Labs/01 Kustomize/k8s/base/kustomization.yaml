@@ -3,6 +3,7 @@ kind: Kustomization
 
 commonLabels:
     owner: james
+   
 
 resources:
     - namespace.yaml
