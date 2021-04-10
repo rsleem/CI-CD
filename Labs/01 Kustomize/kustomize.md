@@ -85,12 +85,18 @@ In this lab we're going to:
 * install ArgoCD CLI
 
 switch to helloworld directory.
+
+tree the base directory:
+```
+tree base
+```
+to view the concatenated output:
 ```
 kustomize build base
 ```
-or 
+switch to 01 kustomize directory:
 ```
-kubectl apply -k helloworld/base
+kustomize build helloworld/base | k apply -f -
 ```
 
 
