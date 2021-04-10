@@ -185,4 +185,7 @@ diff \
   more
 ```
 
+  > For further examples: https://github.com/kubernetes-sigs/kustomize/tree/master/examples
+
+
 ---
