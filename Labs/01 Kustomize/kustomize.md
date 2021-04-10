@@ -80,16 +80,18 @@ kubectl delete -f 01_nginx-deployment.yaml
 #### <font color='red'> 1.1.2 Kustomize </font>
 
 In this lab we're going to:
-* install ArgoCD
+* configure kustomization.yaml
 * deploys Prometheues Stack via kube-prometheus-stack helm chart
 * install ArgoCD CLI
 
-switch to base directory.
-
-
-
-
-
+switch to helloworld directory.
+```
+kustomize build base
+```
+or 
+```
+kubectl apply -k helloworld/base
+```
 
 
 
