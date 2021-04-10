@@ -1,11 +1,10 @@
-## <font color='red'> 1.1 Kustomize </font>
-Kustomize lets you lets you create an entire Kubernetes application out of individual pieces — without touching the YAML configuration filesfor the individual components.  For example, you can combine pieces from different sources, keep your customizations — or kustomizations, as the case may be — in source control, and create overlays for specific situations. 
-
-
-And it is part of Kubernetes 1.14 or later. Kustomize enables you to do that by creating a file that ties everything together, or optionally includes “overrides” for individual parameters.
+## <font color='red'> 2.1 GitOps </font>
+GitOps is a way to do Kubernetes cluster management and application delivery.  
+It works by using Git as a single source of truth for declarative infrastructure and applications. With GitOps, the use of software agents can alert on any divergence between Git with what's running in a cluster, and if there's a difference, Kubernetes reconcilers automatically update or rollback the cluster depending on the case. 
+With Git at the center of your delivery pipelines, developers use familiar tools to make pull requests to accelerate and simplify both application deployments and operations tasks to Kubernetes.
 
 In this lab we're going to:
-* install minikube
+* install skaffold
 * check kustomize
 * sync apps on k8s-argocd cluster
 * metrics in Grafana & Prometheus
@@ -63,19 +62,23 @@ kubectl delete -f 01_nginx-deployment.yaml
 
 ---
 
-#### <font color='red'> 1.1.2 Kustomize Base </font>
-A base is a kustomization referred to by some other kustomization.  
-Any kustomization, including an overlay, can be a base to another kustomization.  
-A base has no knowledge of the overlays that refer to it.  
+#### <font color='red'> 1.1.2 Skaffold </font>
+Skaffold is a command line tool that facilitates continuous development for Kubernetes-native applications. Skaffold handles the workflow for building, pushing, and deploying your application, and provides building blocks for creating CI/CD pipelines. 
 
-For simple gitops management, a base configuration could be the sole content of a git repository dedicated to that purpose. Same with overlays. Changes in a repo could generate a build, test and deploy cycle.
+This enables you to focus on iterating on your application locally while Skaffold continuously deploys to your local or remote Kubernetes cluster.
 
 In this lab we're going to:
-* configure kustomization.yaml
-* deploy helloworld app
-* verify deployment
+* install Skaffold
+* download a sample go app
 
-switch to helloworld directory.
+* Use skaffold dev to build and deploy your app every time your code changes,
+* Use skaffold run to build and deploy your app once, similar to a CI/CD pipeline
+
+install skaffold:
+
+sudo snap install skaffold
+
+
 
 tree the base directory:
 ```
@@ -102,7 +105,7 @@ Note: Version 1: Good Morning!  These values are being pulled from the configmap
 
 clean up:
 ```
-kustomize build base | k delete -f -
+kustomize build base | k apply -f -
 ```
 reset tunnel:
 ```
@@ -150,16 +153,6 @@ Note: make a note of the External IP of the service.
 Note: Version 1: Good Morning!  These values are being pulled from the configmap. 
 
 
-clean up:
-```
-kustomize build overlays/staging | k delete -f -
-```
-reset tunnel:
-```
-minikube tunnel cleanup
-```
-
-
 **production overlay**
 
 switch to production overlay directory and tree:
@@ -182,15 +175,6 @@ Note: make a note of the External IP of the service.
  > open in browser: http://Service-External-IP:8666
 
 Note: Version 1: Good Morning!  These values are being pulled from the configmap. 
-
-clean up:
-```
-kustomize build overlays/staging | k delete -f -
-```
-reset tunnel:
-```
-minikube tunnel cleanup
-```
 
 compare the output directly to see how staging and production differ:
 ```
