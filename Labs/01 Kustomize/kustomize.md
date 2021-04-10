@@ -146,7 +146,6 @@ switch to production overlay directory and tree:
 tree production
 ```
 * view the deployment.yaml #changing the replica count
-
 * view the kustomization. yaml #matched on labels and the patched & mergred with base/deployment.yaml
 
 switch to 01 kustomize directory:
