@@ -1,0 +1,20 @@
+apiVersion: skaffold/v2beta13
+kind: Config
+metadata:
+  name: my-express-app
+build:
+  artifacts:
+  - image: jporeilly/my-express-app
+deploy:
+  helm:
+    releases:
+    - name: my-express-app
+      chartPath: bitnami/node
+      remote: true
+      setValues:
+        image.repository: jporeilly/my-express-app
+        service.type: LoadBalancer
+        getAppFromExternalRepository: false
+        applicationPort: 3000
+      setValueTemplates:
+        image.tag: "{{ .DIGEST_HEX }}"

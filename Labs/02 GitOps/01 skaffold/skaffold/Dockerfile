@@ -1,10 +1,21 @@
-FROM klakegg/hugo:0.78.2-alpine
-RUN apk add -U git
-COPY . /src
-RUN make init
-RUN make build
+FROM bitnami/node:10 as builder
+ENV NODE_ENV="production"
 
-FROM nginx:1.19.4-alpine
-RUN mv /usr/share/nginx/html/index.html /usr/share/nginx/html/old-index.html
-COPY --from=0 /src/public /usr/share/nginx/html
-EXPOSE 80
+# Copy app's source code to the /app directory
+COPY . /app
+
+# The application's directory will be the working directory
+WORKDIR /app
+
+# Install Node.js dependencies defined in '/app/package.json'
+RUN npm install
+
+FROM bitnami/node:10-prod
+ENV NODE_ENV="production"
+COPY --from=builder /app /app
+WORKDIR /app
+ENV PORT 3000
+EXPOSE 3000
+
+# Start the application
+CMD ["npm", "start"]
