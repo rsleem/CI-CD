@@ -36,6 +36,10 @@ start minikube:
 ```
 minikube start
 ```
+add ingress:
+```
+minikube addons enable ingress
+```
 minikube tunnel:
 ```
 minikube tunnel
@@ -43,21 +47,6 @@ minikube tunnel
 verify kustomize:
 ```
 kustomize version
-```
-
-deploy nginx:
-```
-kubectl apply -f 01_nginx-deployment.yaml
-```
-show labels:
-```
-kubectl get all --show-labels
-```
-Note: the labels..
-
-clean up:
-```
-kubectl delete -f 01_nginx-deployment.yaml
 ```
 
 ---
@@ -75,42 +64,24 @@ In this lab we're going to:
 * Use skaffold run to build and deploy your app once, similar to a CI/CD pipeline
 
 install skaffold:
-
+```
 sudo snap install skaffold
+```
+check installed:
+```
+skaffold version
+```
+skaffold commands:
+
+  > open in browser: https://skaffold.dev/docs/references/cli/
 
 
 
-tree the base directory:
-```
-tree base
-```
-to view the concatenated output:
-```
-kustomize build base
-```
-deploy app:
-```
-kustomize build base | k apply -f -
-```
-verify deployment:
-```
-kg all
-```
-Note: make a note of the External IP of the service.
-
- > open in browser: http://Service-External-IP:8666
-
-Note: Version 1: Good Morning!  These values are being pulled from the configmap. 
 
 
-clean up:
-```
-kustomize build base | k apply -f -
-```
-reset tunnel:
-```
-minikube tunnel cleanup
-```
+
+
+
 
 
 --- 
