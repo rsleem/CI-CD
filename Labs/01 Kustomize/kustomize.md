@@ -99,6 +99,17 @@ Note: make a note of the External IP of the service.
 
 Note: Version 1: Good Morning!  These values are being pulled from the configmap. 
 
+
+clean up:
+```
+kustomize build base | k apply -f -
+```
+reset tunnel:
+```
+minikube tunnel cleanup
+```
+
+
 --- 
 
 #### <font color='red'> 1.1.3 Kustomize Base + Overlays + Variants </font>
