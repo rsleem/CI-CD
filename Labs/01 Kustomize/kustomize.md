@@ -66,7 +66,7 @@ kubectl apply -f 01_nginx-deployment.yaml
 ```
 show labels:
 ```
-kubectl get all --show-lables
+kubectl get all --show-labels
 ```
 Note: the labels..
 
@@ -77,7 +77,12 @@ kubectl delete -f 01_nginx-deployment.yaml
 
 ---
 
-#### <font color='red'> 1.1.2 Kustomize </font>
+#### <font color='red'> 1.1.2 Kustomize Base </font>
+A base is a kustomization referred to by some other kustomization.  
+Any kustomization, including an overlay, can be a base to another kustomization.  
+A base has no knowledge of the overlays that refer to it.  
+
+For simple gitops management, a base configuration could be the sole content of a git repository dedicated to that purpose. Same with overlays. Changes in a repo could generate a build, test and deploy cycle.
 
 In this lab we're going to:
 * configure kustomization.yaml
@@ -108,4 +113,15 @@ Note: make a note of the External IP of the service.
 
 Note: Version 1: Good Morning!  These values are being pulled from the configmap. 
 
+--- 
+
+#### <font color='red'> 1.1.3 Kustomize Base + Overlays + Variants </font>
+An overlay is a kustomization that depends on another kustomization.  
+The kustomizations an overlay refers to (via file path, URI or other method) are called bases.  
+An overlay is unusable without its bases.  
+An overlay may act as a base to another overlay.  
+
+Overlays make the most sense when there is more than one, because they create different variants of a common base - e.g. development, QA, staging and production environment variants.  
+
+These variants use the same overall resources, and vary in relatively simple ways, e.g. the number of replicas in a deployment, the CPU to a particular pod, the data source used in a ConfigMap, etc.  
 

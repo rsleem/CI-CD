@@ -4,14 +4,14 @@ kind: Kustomization
 bases:
 - ../../base
 
-namePrefix: production-
+namePrefix: staging-
 
 commonLabels:
-  variant: production
+  variant: staging
   org: acmeCorporation
 
 commonAnnotations:
-  note: Hello, I am production!
+  note: Hello, I am staging!
 
 patchesStrategicMerge:
-- deployment.yaml
+- map.yaml
