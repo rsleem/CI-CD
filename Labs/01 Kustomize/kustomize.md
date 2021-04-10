@@ -132,3 +132,13 @@ in this lab we're going to:
 
 expand the helloworld/staging overlay.
 
+switch to staging overlay directory and tree:
+```
+tree staging
+```
+view the map.yaml # changing the configmap values
+
+deploy staging:
+```
+kustomize build helloworld/overlays/staging | kubectl apply -f -
+```
