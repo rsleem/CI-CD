@@ -176,3 +176,13 @@ Note: make a note of the External IP of the service.
  > open in browser: http://Service-External-IP:8666
 
 Note: Version 1: Good Morning!  These values are being pulled from the configmap. 
+
+compare the output directly to see how staging and production differ:
+```
+diff \
+  <(kustomize build helloworld/overlays/staging) \
+  <(kustomize build helloworld/overlays/production) |\
+  more
+```
+
+---
