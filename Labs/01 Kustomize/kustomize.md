@@ -109,7 +109,7 @@ kg all
 ```
 Note: make a note of the External IP of the service.
 
-  > in browser: http://[External-IP]:8666
+ > open in browser: http://Service-External-IP:8666
 
 Note: Version 1: Good Morning!  These values are being pulled from the configmap. 
 
@@ -124,4 +124,11 @@ An overlay may act as a base to another overlay.
 Overlays make the most sense when there is more than one, because they create different variants of a common base - e.g. development, QA, staging and production environment variants.  
 
 These variants use the same overall resources, and vary in relatively simple ways, e.g. the number of replicas in a deployment, the CPU to a particular pod, the data source used in a ConfigMap, etc.  
+
+in this lab we're going to:
+* configure overlays
+* configure variants
+* patching
+
+expand the helloworld/staging overlay.
 
