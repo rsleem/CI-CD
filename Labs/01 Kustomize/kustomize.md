@@ -81,8 +81,8 @@ kubectl delete -f 01_nginx-deployment.yaml
 
 In this lab we're going to:
 * configure kustomization.yaml
-* deploys Prometheues Stack via kube-prometheus-stack helm chart
-* install ArgoCD CLI
+* deploy helloworld app
+* verify deployment
 
 switch to helloworld directory.
 
@@ -98,7 +98,14 @@ switch to 01 kustomize directory:
 ```
 kustomize build helloworld/base | k apply -f -
 ```
+verify deployment:
+```
+kg all
+```
+Note: make a note of the External IP of the service.
 
+  > in browser: http://[External-IP]:8666
 
+Note: Version 1: Good Morning!  These values are being pulled from the configmap. 
 
 
