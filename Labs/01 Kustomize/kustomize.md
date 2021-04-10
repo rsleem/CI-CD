@@ -142,3 +142,12 @@ deploy staging:
 ```
 kustomize build helloworld/overlays/staging | kubectl apply -f -
 ```
+verify deployment:
+```
+kg all
+```
+Note: make a note of the External IP of the service.
+
+ > open in browser: http://Service-External-IP:8666
+
+Note: Version 1: Good Morning!  These values are being pulled from the configmap. 
