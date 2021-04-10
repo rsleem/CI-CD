@@ -6,7 +6,7 @@ And it is part of Kubernetes 1.14 or later. Kustomize enables you to do that by 
 
 In this lab we're going to:
 * install minikube
-* configure to pull apps from GitHub - GitOps
+* check kustomize
 * sync apps on k8s-argocd cluster
 * metrics in Grafana & Prometheus
 
@@ -59,6 +59,27 @@ verify kustomize:
 ```
 k version
 ```
+
+deploy nginx:
+```
+kubectl apply -f 01_nginx-deployment.yaml
+```
+show labels:
+```
+kubectl get all --show-lables
+```
+
+clean up:
+```
+kubectl delete -f 01_nginx-deployment.yaml
+```
+
+
+
+
+
+
+
 
 ---
 
