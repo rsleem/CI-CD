@@ -28,6 +28,11 @@ minikube delete
 ---
 
 
+
+
+
+
+
 * GitOps is a way to do Kubernetes cluster management and application delivery.  It works by using Git as a single source of truth for declarative infrastructure and applications. With GitOps, the use of software agents can alert on any divergence between Git with what's running in a cluster, and if there's a difference, Kubernetes reconcilers automatically update or rollback the cluster depending on the case. With Git at the center of your delivery pipelines, developers use familiar tools to make pull requests to accelerate and simplify both application deployments and operations tasks to Kubernetes.
 
 obviously you will require a GitHub account if you want to try yourself.
@@ -37,25 +42,22 @@ obviously you will require a GitHub account if you want to try yourself.
 
 ---
 
-#### <font color='red'> 1.1.1 ArgoCD - Dev K8s Cluster </font>
+#### <font color='red'> 1.1.1 K8s Cluster </font>
 The next step is to create k8s-dev Kubernetes cluster: 
-* k8s-dev - install ArgoCD
+* install minikube
+* check kustomize
 
-start k8s-dev cluster:
+start minikube:
 ```
-minikube start -p k8s-dev
+minikube start
 ```
-enable ingress:
+minikube tunnel:
 ```
-minikube addons enable ingress -p k8s-dev
+minikube tunnel
 ```
-verify ingress:
+verify kustomize:
 ```
-ksysgpo
-```
-confirm that your k8s-dev context is set correctly:
-```
-kubectl config use-context k8s-dev
+k version
 ```
 
 ---
