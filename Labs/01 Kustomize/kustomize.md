@@ -126,11 +126,11 @@ Overlays make the most sense when there is more than one, because they create di
 These variants use the same overall resources, and vary in relatively simple ways, e.g. the number of replicas in a deployment, the CPU to a particular pod, the data source used in a ConfigMap, etc.  
 
 in this lab we're going to:
-* configure overlays
+* configure overlays - staging & production
 * configure variants
 * patching
 
-expand the helloworld/staging overlay.
+**staging overlay**
 
 switch to staging overlay directory and tree:
 ```
@@ -138,9 +138,32 @@ tree staging
 ```
 view the map.yaml # changing the configmap values
 
-deploy staging:
+switch to 01 kustomize directory:
 ```
 kustomize build helloworld/overlays/staging | kubectl apply -f -
+```
+verify deployment:
+```
+kg all
+```
+Note: make a note of the External IP of the service.
+
+ > open in browser: http://Service-External-IP:8666
+
+Note: Version 1: Good Morning!  These values are being pulled from the configmap. 
+
+
+**production overlay**
+
+switch to production overlay directory and tree:
+```
+tree production
+```
+view the deployment.yaml # changing the replica count
+
+switch to 01 kustomize directory:
+```
+kustomize build helloworld/overlays/production | kubectl apply -f -
 ```
 verify deployment:
 ```
