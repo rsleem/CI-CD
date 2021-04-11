@@ -1,0 +1,19 @@
+
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: deployment
+spec:
+  selector:
+    matchLabels:
+      run: nginx
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: service
+spec:
+  selector:
+    app: nginx
