@@ -4,10 +4,17 @@ It works by using Git as a single source of truth for declarative infrastructure
 With Git at the center of your delivery pipelines, developers use familiar tools to make pull requests to accelerate and simplify both application deployments and operations tasks to Kubernetes.
 
 In this lab we're going to:
-* install skaffold
 * check kustomize
-* sync apps on k8s-argocd cluster
-* metrics in Grafana & Prometheus
+* check skaffold
+* check Docker - you will need a Docker Hub account.
+
+* run various projects to illustrate the features of skaffold
+
+list of projects:
+* getting-started - deploys app with kubectl
+* getting-started-kustomize - deploys app with kustomize to 3 environments (dev, staging, prod) 
+
+
 
 ---
 
@@ -23,6 +30,25 @@ to delete  minikube:
 ```
 minikube delete
 ```
+
+**Pre-requistes:**
+verify kustomize:
+```
+kustomize version
+```
+helm version:
+```
+helm version
+```
+verify skaffold:
+```
+skaffold version
+```
+login into Docker Hub:
+```
+docker login
+```
+
 
 ---
 
@@ -44,10 +70,7 @@ minikube tunnel:
 ```
 minikube tunnel
 ```
-verify kustomize:
-```
-kustomize version
-```
+
 
 ---
 
