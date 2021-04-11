@@ -7,8 +7,8 @@ And it is part of Kubernetes 1.14 or later. Kustomize enables you to do that by 
 In this lab we're going to:
 * install minikube
 * check kustomize
-* sync apps on k8s-argocd cluster
-* metrics in Grafana & Prometheus
+* deploy nginx app with kubectl
+* deploy app with kustomize
 
 ---
 
@@ -32,6 +32,7 @@ minikube delete
 The next step is to create Kubernetes cluster: 
 * install minikube
 * check kustomize
+* deploy nginx app with kubectl
 
 start minikube:
 ```
@@ -112,7 +113,6 @@ reset tunnel:
 minikube tunnel cleanup
 ```
 
-
 --- 
 
 #### <font color='red'> 1.1.3 Kustomize Base + Overlays + Variants </font>
@@ -130,7 +130,11 @@ in this lab we're going to:
 * configure variants
 * patching
 
-**staging overlay**
+**staging overlay**  
+
+Patches can be used to apply different customizations to Resources. Kustomize supports different patching mechanisms through patchesStrategicMerge and patchesJson6902. patchesStrategicMerge is a list of file paths. Each file should be resolved to a strategic merge patch. 
+
+The names inside the patches must match Resource names that are already loaded. Small patches that do one thing are recommended. For example, create one patch for increasing the deployment replica number and another patch for setting the memory limit.
 
 switch to helloworld directory and tree:
 ```
@@ -163,7 +167,7 @@ minikube tunnel cleanup
 ```
 
 
-**production overlay**
+**production overlay**  
 
 switch to helloworld directory and tree:
 ```
