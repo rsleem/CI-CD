@@ -68,7 +68,7 @@ A base is a kustomization referred to by some other kustomization.
 Any kustomization, including an overlay, can be a base to another kustomization.  
 A base has no knowledge of the overlays that refer to it.  
 
-For simple gitops management, a base configuration could be the sole content of a git repository dedicated to that purpose. Same with overlays. Changes in a repo could generate a build, test and deploy cycle.
+For simple GitOps management, a base configuration could be the sole content of a git repository dedicated to that purpose. Same with overlays. Changes in a repo could generate a build, test and deploy cycle.
 
 In this lab we're going to:
 * configure kustomization.yaml
@@ -81,6 +81,9 @@ tree the base directory:
 ```
 tree base
 ```
+Examine each of the files to understand their relationship.
+
+
 to view the concatenated output:
 ```
 kustomize build base
@@ -91,7 +94,7 @@ kustomize build base | k apply -f -
 ```
 verify deployment:
 ```
-kg all
+kg all -n hello
 ```
 Note: make a note of the External IP of the service.
 
@@ -129,9 +132,9 @@ in this lab we're going to:
 
 **staging overlay**
 
-switch to staging overlay directory and tree:
+switch to helloworld directory and tree:
 ```
-tree staging
+tree
 ```
 view the map.yaml # changing the configmap values
 
@@ -141,13 +144,13 @@ kustomize build overlays/staging | kubectl apply -f -
 ```
 verify deployment:
 ```
-kg all
+kg all -n hello
 ```
 Note: make a note of the External IP of the service.
 
  > open in browser: http://Service-External-IP:8666
 
-Note: Version 1: Good Morning!  These values are being pulled from the configmap. 
+Note: Version 1: <em>I have a pineapple! </em> These values are being pulled from the configmap. 
 
 
 clean up:
@@ -169,13 +172,13 @@ tree production
 * view the deployment.yaml #changing the replica count
 * view the kustomization. yaml #matched on labels and the patched & mergred with base/deployment.yaml
 
-switch to 01 kustomize directory:
+switch to helloworld directory:
 ```
-kustomize build helloworld/overlays/production | kubectl apply -f -
+kustomize build overlays/production | kubectl apply -f -
 ```
 verify deployment:
 ```
-kg all
+kg all -n hello
 ```
 Note: make a note of the External IP of the service.
 
@@ -195,8 +198,8 @@ minikube tunnel cleanup
 compare the output directly to see how staging and production differ:
 ```
 diff \
-  <(kustomize build helloworld/overlays/staging) \
-  <(kustomize build helloworld/overlays/production) |\
+  <(kustomize build overlays/staging) \
+  <(kustomize build overlays/production) |\
   more
 ```
 
