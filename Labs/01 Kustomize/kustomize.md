@@ -138,7 +138,7 @@ tree
 ```
 view the map.yaml # changing the configmap values
 
-switch to helloworld directory:
+deploy staging variant:
 ```
 kustomize build overlays/staging | kubectl apply -f -
 ```
@@ -165,14 +165,14 @@ minikube tunnel cleanup
 
 **production overlay**
 
-switch to production overlay directory and tree:
+switch to helloworld directory and tree:
 ```
-tree production
+tree
 ```
 * view the deployment.yaml #changing the replica count
 * view the kustomization. yaml #matched on labels and the patched & mergred with base/deployment.yaml
 
-switch to helloworld directory:
+deploy production variant:
 ```
 kustomize build overlays/production | kubectl apply -f -
 ```
@@ -180,7 +180,7 @@ verify deployment:
 ```
 kg all -n hello
 ```
-Note: make a note of the External IP of the service.
+Note: make a note of the External IP of the service. # of replicas = 5
 
  > open in browser: http://Service-External-IP:8666
 
@@ -188,7 +188,7 @@ Note: Version 1: Good Morning!  These values are being pulled from the configmap
 
 clean up:
 ```
-kustomize build overlays/staging | k delete -f -
+kustomize build overlays/production | k delete -f -
 ```
 reset tunnel:
 ```
