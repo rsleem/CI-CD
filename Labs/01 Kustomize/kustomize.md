@@ -226,7 +226,7 @@ Kustomize creates new resources by applying a series of transformations to an or
 Run through the transformers project and note how the transformer values declared in the patch file are mapped to the base.  This enables apps to be deployed against a 'template' base configuration.
 
 
-**transformers**
+**transformers**  
 switch to transformers directory and tree:
 ```
 tree
@@ -239,6 +239,6 @@ verify deployment:
 ```
 kg all -n nginx
 ```
-
+Note: you can expose the service or port-forward to the service.
 
 ---
