@@ -80,24 +80,24 @@ switch to helloworld directory.
 
 tree the base directory:
 ```
-tree base
+tree base-hello
 ```
 Examine each of the files to understand their relationship.
 
 
 to view the concatenated output:
 ```
-kustomize build base
+kustomize build base-hello
 ```
 deploy app:
 ```
-kustomize build base | k apply -f -
+kustomize build base-hello | k apply -f -
 ```
 verify deployment:
 ```
 kg all -n hello
 ```
-Note: make a note of the External IP of the service.
+Note: make a note of the External IP of the service.  Each resource starts with the- prefix.
 
  > open in browser: http://Service-External-IP:8666
 
