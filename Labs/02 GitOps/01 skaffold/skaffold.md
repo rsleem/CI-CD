@@ -1,4 +1,4 @@
-## <font color='red'> 2.1 GitOps </font>
+## <font color='red'> 2.1 Skaffold </font>
 GitOps is a way to do Kubernetes cluster management and application delivery.  
 It works by using Git as a single source of truth for declarative infrastructure and applications. With GitOps, the use of software agents can alert on any divergence between Git with what's running in a cluster, and if there's a difference, Kubernetes reconcilers automatically update or rollback the cluster depending on the case. 
 With Git at the center of your delivery pipelines, developers use familiar tools to make pull requests to accelerate and simplify both application deployments and operations tasks to Kubernetes.
@@ -49,9 +49,7 @@ login into Docker Hub:
 docker login
 ```
 
-
 ---
-
 
 #### <font color='red'> 1.1.1 K8s Cluster </font>
 The next step is to create Kubernetes cluster: 
@@ -71,7 +69,6 @@ minikube tunnel:
 minikube tunnel
 ```
 
-
 ---
 
 #### <font color='red'> 1.1.2 Skaffold </font>
@@ -79,27 +76,17 @@ Skaffold is a command line tool that facilitates continuous development for Kube
 
 This enables you to focus on iterating on your application locally while Skaffold continuously deploys to your local or remote Kubernetes cluster.
 
-In this lab we're going to:
-* install Skaffold
-* download a sample go app
-
-* Use skaffold dev to build and deploy your app every time your code changes,
-* Use skaffold run to build and deploy your app once, similar to a CI/CD pipeline
-
-install skaffold:
-```
-sudo snap install skaffold
-```
-check installed:
-```
-skaffold version
-```
 skaffold commands:
 
   > open in browser: https://skaffold.dev/docs/references/cli/
 
 
-
+**getting-started**
+Getting started with a simple go app.
+This is a simple example based on:
+* building a single Go file app and with a multistage Dockerfile using local docker to build
+* tagging using the default tagPolicy (gitCommit)
+* deploying a single container pod using kubectl
 
 
 
