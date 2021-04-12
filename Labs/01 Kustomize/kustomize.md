@@ -106,7 +106,7 @@ Note: Version 1: Good Morning!  These values are being pulled from the configmap
 
 clean up:
 ```
-kustomize build base | k delete -f -
+kustomize build base-hello | k delete -f -
 ```
 reset tunnel:
 ```
@@ -151,7 +151,7 @@ verify deployment:
 ```
 kg all -n hello
 ```
-Note: make a note of the External IP of the service.
+Note: make a note of the External IP of the service. Prefix is staging-.
 
  > open in browser: http://Service-External-IP:8666
 
@@ -185,7 +185,7 @@ verify deployment:
 ```
 kg all -n hello
 ```
-Note: make a note of the External IP of the service. # of replicas = 5
+Note: make a note of the External IP of the service. # of replicas = 5. Prefix is production- 
 
  > open in browser: http://Service-External-IP:8666
 
