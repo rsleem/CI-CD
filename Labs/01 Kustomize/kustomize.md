@@ -213,4 +213,14 @@ diff \
 
 ---
 
-#### <font color='red'> 1.1.4 Projects </font>
+#### <font color='red'> 1.1.4 Transformers </font>
+Kustomize creates new resources by applying a series of transformations to an original set of resources. Kustomize provides the following default transformers:
+  * annotations
+  * images
+  * labels
+  * name reference
+  * namespace
+  * prefix/suffix
+  * variable reference
+
+Run through the transformers project and note how the transformer values declared in the patch file are mapped to the base.  This enables apps to be deployed against a 'template' base configuration.
