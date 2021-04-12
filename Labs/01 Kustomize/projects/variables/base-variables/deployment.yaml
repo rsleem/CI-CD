@@ -2,10 +2,11 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: deployment
+  namespace: namespace
 spec:
   selector:
     matchLabels:
-      run: $name
+      run: name
   replicas: 2
   template:
     metadata:
@@ -16,4 +17,4 @@ spec:
       - name: name
         image: replaceme
         ports:
-        - containerPort: 80      
+        - containerPort: 80     

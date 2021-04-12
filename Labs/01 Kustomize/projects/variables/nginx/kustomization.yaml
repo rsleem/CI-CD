@@ -11,5 +11,7 @@ namePrefix: nginx-
 commonLabels:
     app: nginx
     run: nginx
+    namespace: nginx
+    
 patchesStrategicMerge:
 - patch.yaml
