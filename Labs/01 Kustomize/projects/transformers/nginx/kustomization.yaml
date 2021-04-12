@@ -4,6 +4,8 @@ kind: Kustomization
 resources:
 - ../base-transformers
 
+namespace: nginx
+
 images:
 - name: replaceme
   newName: nginx
@@ -13,7 +15,6 @@ namePrefix: nginx-
 commonLabels:
     app: nginx
     run: nginx
-    namespace: nginx
     
 patchesStrategicMerge:
 - patch.yaml
