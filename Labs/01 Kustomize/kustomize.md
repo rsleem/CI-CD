@@ -115,7 +115,7 @@ minikube tunnel cleanup
 
 --- 
 
-#### <font color='red'> 1.1.3 Kustomize Base + Overlays + Variants </font>
+#### <font color='red'> 1.1.3 Kustomize Base + Overlays + Variants - helloworld </font>
 An overlay is a kustomization that depends on another kustomization.  
 The kustomizations an overlay refers to (via file path, URI or other method) are called bases.  
 An overlay is unusable without its bases.  
@@ -212,3 +212,5 @@ diff \
 
 
 ---
+
+#### <font color='red'> 1.1.4 Projects </font>
