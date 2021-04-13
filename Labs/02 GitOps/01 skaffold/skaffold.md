@@ -88,7 +88,7 @@ switch to getting-started directory:
 
 build a skaffold.yaml:
 ```
-skaffold.init
+skaffold init
 ```
 Note: Save the skaffold.yaml file.  There's a skaffold.yaml.bak just in case..!
 
@@ -102,6 +102,48 @@ skaffold dev
 Change the 'Hello world!' in the main.go
 
 Ctrl+C will stop app.
+
+clean up:
+```
+skaffold delete
+```
+
+**getting-started-kustomize**
+This is a simple example based on:
+* building a single Go file app and with a multistage Dockerfile using local docker to build
+* tagging using the default tagPolicy (gitCommit)
+* deploying a single container pod using kustomize
+
+switch to getting-started-kustomize directory:  
+
+build a skaffold.yaml:
+```
+skaffold init
+```
+Note: Save the skaffold.yaml file.  There's a skaffold.yaml.bak just in case..!
+
+Open the skaffold.yaml file
+Notice its detected that the app will be deployed using kustomize.
+
+just deploy the app once:
+```
+skaffold run
+```
+
+
+clean up
+
+
+
+
+**getting-started-gitlab**
+Getting started with a simple go app.
+This is a simple example based on:
+* building a single Go file app and with a multistage Dockerfile using local docker to build
+* tagging using the default tagPolicy (gitCommit)
+* push image to Docker
+* deploying a single container pod using kubectl
+
 
 
 
