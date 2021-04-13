@@ -101,8 +101,8 @@ Notice its detected that the app will be deployed using kubectl.
 
 deploy app:
 ```
-skaffold 
-
+skaffold dev 
+```
 
 
 
