@@ -4,6 +4,7 @@ kind: Config
 metadata:
   name: getting-started-kustomize
 build:
+  local: {}
   artifacts:
   - image: skaffold-kustomize
     context: app

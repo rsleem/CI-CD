@@ -1,6 +1,7 @@
 apiVersion: skaffold/v2beta13
 kind: Config
 build:
+  local: {}
   artifacts:
   - image: skaffold-example
 deploy:
