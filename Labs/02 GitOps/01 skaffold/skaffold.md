@@ -88,9 +88,20 @@ This is a simple example based on:
 * tagging using the default tagPolicy (gitCommit)
 * deploying a single container pod using kubectl
 
+switch to getting-started directory:  
 
+build a skaffold.yaml:
+```
+skaffold.init
+```
+Note: Save the skaffold.yaml file.  There's a skaffold.yaml.bak just in case..!
 
+Open the skaffold.yaml file
+Notice its detected that the app will be deployed using kubectl.
 
+deploy app:
+```
+skaffold 
 
 
 
