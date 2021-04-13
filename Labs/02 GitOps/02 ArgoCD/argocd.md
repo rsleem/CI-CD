@@ -130,16 +130,19 @@ just deploy the app once:
 skaffold run
 ```
 
+
 clean up
-```
-skaffold delete
-```
-
----
 
 
 
 
+**getting-started-gitlab**
+Getting started with a simple go app.
+This is a simple example based on:
+* building a single Go file app and with a multistage Dockerfile using local docker to build
+* tagging using the default tagPolicy (gitCommit)
+* push image to Docker
+* deploying a single container pod using kubectl
 
 
 
