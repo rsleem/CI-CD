@@ -60,10 +60,6 @@ start minikube:
 ```
 minikube start
 ```
-add ingress:
-```
-minikube addons enable ingress
-```
 minikube tunnel:
 ```
 minikube tunnel
@@ -103,6 +99,7 @@ deploy app:
 ```
 skaffold dev 
 ```
+Change the 'message in the main.go
 
 
 
