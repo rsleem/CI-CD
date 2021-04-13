@@ -99,7 +99,9 @@ deploy app:
 ```
 skaffold dev 
 ```
-Change the 'message in the main.go
+Change the 'Hello world!' in the main.go
+
+Ctrl+C will stop app.
 
 
 
