@@ -5,7 +5,7 @@ metadata:
 spec:
   selector:
     matchLabels:
-      run: nginx
+      run: name
 
 ---
 
@@ -15,4 +15,4 @@ metadata:
   name: service
 spec:
   selector:
-    app: nginx
+    app: name

@@ -1,7 +1,5 @@
-## <font color='red'> 2.1 Skaffold </font>
-GitOps is a way to do Kubernetes cluster management and application delivery.  
-It works by using Git as a single source of truth for declarative infrastructure and applications. With GitOps, the use of software agents can alert on any divergence between Git with what's running in a cluster, and if there's a difference, Kubernetes reconcilers automatically update or rollback the cluster depending on the case. 
-With Git at the center of your delivery pipelines, developers use familiar tools to make pull requests to accelerate and simplify both application deployments and operations tasks to Kubernetes.
+## <font color='red'> 2.2 ArgoCD </font>
+Argo CD is a declarative, GitOps continuous delivery tool for Kubernetes.
 
 In this lab we're going to:
 * check kustomize
