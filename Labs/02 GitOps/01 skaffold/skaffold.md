@@ -6,7 +6,6 @@ With Git at the center of your delivery pipelines, developers use familiar tools
 In this lab we're going to:
 * check kustomize
 * check skaffold
-* check Docker - you will need a Docker Hub account.
 
 * run various projects to illustrate the features of skaffold
 
@@ -43,10 +42,6 @@ helm version
 verify skaffold:
 ```
 skaffold version
-```
-login into Docker Hub:
-```
-docker login
 ```
 
 ---
@@ -97,11 +92,11 @@ Notice its detected that the app will be deployed using kubectl.
 
 deploy app:
 ```
-skaffold dev 
+skaffold dev --no-prune=false --cache-artifacts=false
 ```
 Change the 'Hello world!' in the main.go
 
-Ctrl+C will stop app.
+Ctrl+C will stop app. Note using the above flags will prune and delete the images.
 
 clean up:
 ```
