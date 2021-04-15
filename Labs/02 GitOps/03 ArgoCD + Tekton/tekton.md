@@ -20,14 +20,42 @@ directory structure:
   
 **resources:** directory used to manage the two repositories (code and gitops):
 * sources-repo: source code of the app 
-* gitops-repo: repository where Kubernetes files associated to the service to be deployed are
-
-
-
+* gitops-repo: repository used for Kubernetes deployment YAML files.
 
 ---
 
-## <font color='red'> 3.1.1 Install Rancher</font>
+#### <font color='red'> 3.1.1 Install k3s Rancher</font>
 k3d is a lightweight wrapper to run k3s (Rancher Lab’s minimal Kubernetes distribution) in docker.
 k3d makes it very easy to create single- and multi-node k3s clusters in docker, e.g. for local development on Kubernetes.
 
+This step is optional. If you already have a cluster, perfect, but if not, you can create a local one based on k3d.
+Ensure you're in the correct directory
+create k3d cluster:
+```
+./create-local-cluster.sh
+```
+
+---
+
+
+#### <font color='red'> 3.1.2 Install Tekton + Argo CD</font>
+The POC script:
+* Installs Tekton + Argo CD, including secrets to access to Git repo
+* Creates the volume and claim necessary to execute pipelines
+* Deploys Tekton dashboard
+* Deploys Sonarqube
+* Deploys Nexus and configure an standard instance
+* Creates the configmap associated to Maven settings.xml, ready to publish artifacts in Nexus (with user and password)
+* Installs Tekton tasks and pipelines
+* Git-clone (from Tekton Hub)
+* Maven (from Tekton Hub)
+* Buildah (from Tekton Hub)
+* Prepare Image (custom task: poc/conf/tekton/tasks/prepare-image-task.yaml)
+* Push to GitOps repo (custom task: poc/conf/tekton/tasks/push-to-gitops-repo.yaml)
+* Installs Argo CD application, configured to check changes in gitops repository (resources/gitops_repo)
+* Update Argo CD password
+
+```
+./setup-poc.sh
+```
+** Be patient. The process takes some minutes
