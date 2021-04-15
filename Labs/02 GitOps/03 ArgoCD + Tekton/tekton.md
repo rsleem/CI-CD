@@ -61,18 +61,61 @@ The POC script:
 
 ---
 
-#### <font color='red'> 3.1.3 Access Tekton + Argo CD</font>
+#### <font color='red'> 3.1.3 Access Tekton + Argo CD + Tests</font>
+
+**Tekton**  
+
+the tests run:
+* SonarQube® is an automatic code review tool to detect bugs, vulnerabilities, and code smells in your code. It can integrate with your existing workflow to enable continuous code inspection across your project branches and pull requests.
+
 
 to access Tekton dashboard:
 ```
 kubectl proxy --port=8080
 ```
 access the pipline:
-```
-http://localhost:8080/api/v1/namespaces/tekton-pipelines/services/tekton-dashboard:http/proxy/#/namespaces/cicd/pipelineruns
-```
+
+  > in browser: http://localhost:8080/api/v1/namespaces/tekton-pipelines/services/tekton-dashboard:http/proxy/#/namespaces/cicd/pipelineruns
+
 watch the video..
+
 to view the pods executing the pipeline:
 ```
 kubectl get pods -n cicd -l "tekton.dev/pipelineRun=products-ci-pipelinerun"
 ```
+to access Sonarqube to check quality issues:
+
+  > in browser: http://localhost:9000/projects
+
+access to Nexus to check how the artifact has been published:
+
+Nexus is a repository manager. It allows you to proxy, collect, and manage your dependencies so that you are not constantly juggling a collection of JARs. 
+
+the last stage in CI part consist on performing a push action to GitOps repository. In this stage, content from GitOps repo is cloned, commit information is updated in cloned files (Kubernentes descriptors) and a push is done. 
+
+watch the video..!
+
+**ArgoCD**  
+
+to access the ArgoD dashboard:
+```
+kubectl port-forward svc/argocd-server -n argocd 9080:443
+```
+
+  > in browser: https://localhost:9080
+
+user: admin
+password: admin123
+
+In this dashboard you should be the "product service" application that manages synchronization between Kubernetes cluster and GitOps repository.
+
+eis application is "healthy" but as the objects associated with Product Service (Pods, Services, Deployment,...etc) aren't still deployed to the Kubernetes cluster sync status is "unknown".
+
+Once the "pipelinerun" ends and changes are pushed to GitOps repository, Argo CD compares content deployed in the Kubernetes cluster (associated to Products Service) with content pushed to the GitOps repository and synchronizes Kubernetes cluster against the repository.
+
+clean up:
+```
+delete-local-cluster.sh
+```
+
+---
