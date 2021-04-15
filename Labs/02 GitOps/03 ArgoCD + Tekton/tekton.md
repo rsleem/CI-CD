@@ -12,7 +12,7 @@ CI stages implemented by Tekton:
 CD stages implemented by ArgoCD:
 * Argo CD detects that the repository has changed and perform the sync action against the Kubernetes cluster.
 
-directory structure:
+directory structure:  
 **poc:** this is the main directory. contains 3 scripts:
 * create-local-cluster.sh: this script creates a local Kubernetes cluster based on K3D.
 * delete-local-cluster.sh: this script removes the local cluster
@@ -37,7 +37,6 @@ create k3d cluster:
 
 ---
 
-
 #### <font color='red'> 3.1.2 Install Tekton + Argo CD</font>
 The POC script:
 * Installs Tekton + Argo CD, including secrets to access to Git repo
@@ -58,4 +57,22 @@ The POC script:
 ```
 ./setup-poc.sh
 ```
-** Be patient. The process takes some minutes
+** Be patient. The process takes some minutes. Ignore the Nexus error.
+
+---
+
+#### <font color='red'> 3.1.3 Access Tekton + Argo CD</font>
+
+to access Tekton dashboard:
+```
+kubectl proxy --port=8080
+```
+access the pipline:
+```
+http://localhost:8080/api/v1/namespaces/tekton-pipelines/services/tekton-dashboard:http/proxy/#/namespaces/cicd/pipelineruns
+```
+watch the video..
+to view the pods executing the pipeline:
+```
+kubectl get pods -n cicd -l "tekton.dev/pipelineRun=products-ci-pipelinerun"
+```
