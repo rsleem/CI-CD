@@ -30,6 +30,12 @@ k3d makes it very easy to create single- and multi-node k3s clusters in docker, 
 
 This step is optional. If you already have a cluster, perfect, but if not, you can create a local one based on k3d.
 Ensure you're in the correct directory
+
+download k3d:
+```
+curl -s https://raw.githubusercontent.com/rancher/k3d/main/install.sh | bash
+```
+
 create k3d cluster:
 ```
 ./create-local-cluster.sh
