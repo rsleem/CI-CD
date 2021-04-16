@@ -1,6 +1,7 @@
 #!/bin/bash
 set -e
 
+# sets the required account details for nexus
 nexus_admin_user="admin"
 nexus_final_admin_password="admin123"
 nexus_port="9001"
@@ -18,24 +19,27 @@ echo "                                                            |___/ "
 echo ""
 echo "------------------------------------------------------------------------------------------"
 
+# create the namespaces
 initK8SResources() {
   kubectl create namespace cicd | true
   kubectl create namespace argocd | true
   kubectl apply -f https://storage.googleapis.com/tekton-releases/pipeline/latest/release.yaml
   kubectl apply -f conf/k8s -n cicd
   kubectl apply -f https://github.com/tektoncd/dashboard/releases/latest/download/tekton-dashboard-release.yaml
-  kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
+  kubectl apply -n argocd -f kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
 
   echo '-------------------------------------------------'
   echo 'Be patient while the Pods are created'
   echo '-------------------------------------------------'
 
+# check the Pods status
   while [[ $(kubectl get pods -l 'app in (nexus)' --all-namespaces -o 'jsonpath={..status.conditions[?(@.type=="Ready")].status}') != "True" ]]; do echo "waiting for the Pods..." && sleep 10; done
   while [[ $(kubectl get pods -l 'app in (sonarqube)' --all-namespaces -o 'jsonpath={..status.conditions[?(@.type=="Ready")].status}') != "True" ]]; do echo "Pods ready..." && sleep 10; done
   while [[ $(kubectl get pods -l 'app in (tekton-pipelines-controller)' --all-namespaces -o 'jsonpath={..status.conditions[?(@.type=="Ready")].status}') != "True" ]]; do echo "Pods ready..." && sleep 10; done
   while [[ $(kubectl get pods -l 'app in (tekton-dashboard)' --all-namespaces -o 'jsonpath={..status.conditions[?(@.type=="Ready")].status}') != "True" ]]; do echo "Pods ready..." && sleep 10; done
 }
 
+# set credentials for Nexus
 setAnonymousAccessAllowed() {
   echo "   ---> Anonymous access allowed: start"
   curl -d "@conf/k8s/data/anonymous_data.json" -H "Content-Type: application/json" --location --request PUT "$nexus_api_base_url/security/anonymous" --user "$nexus_admin_user:$nexus_original_admin_pwd" | true
@@ -90,14 +94,16 @@ waitForNexusReady() {
   echo "   ---> Nexus ready"
 }
 
+# remove temp files
 setupNexus() {
   waitForNexusReady
   waitForNexusAPIBeReady
   setAnonymousAccessAllowed
   updateAdminPassword
-  #removeTemporalFiles
+  
 }
 
+# Install Tekton pipelines
 installPoCResources() {
   echo ""
   echo "Deploying configmaps, tasks, pipelines and ArgoCD application"
