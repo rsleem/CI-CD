@@ -88,11 +88,19 @@ to view the pods executing the pipeline:
 ```
 kubectl get pods -n cicd -l "tekton.dev/pipelineRun=products-ci-pipelinerun"
 ```
+
+**Sonarqube**
+
 to access Sonarqube to check quality issues:
 
   > in browser: http://localhost:9000/projects
 
-access to Nexus to check how the artifact has been published:
+user: admin
+password: admin123  
+
+**Nexus**
+
+access Nexus to check how the artifact has been published:
 
 Nexus is a repository manager. It allows you to proxy, collect, and manage your dependencies so that you are not constantly juggling a collection of JARs. 
 
@@ -120,6 +128,8 @@ In this dashboard you should be the "product service" application that manages s
 The application is "healthy" but as the objects associated with Product Service (Pods, Services, Deployment,...etc) aren't still deployed to the Kubernetes cluster sync status is "unknown".
 
 Once the "pipelinerun" ends and changes are pushed to GitOps repository, Argo CD compares content deployed in the Kubernetes cluster (associated to Products Service) with content pushed to the GitOps repository and synchronizes Kubernetes cluster against the repository.
+
+
 
 clean up:
 ```
