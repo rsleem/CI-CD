@@ -13,12 +13,15 @@ CD stages implemented by ArgoCD:
 * Argo CD detects that the repository has changed and perform the sync action against the Kubernetes cluster.
 
 directory structure:  
-**poc:** this is the main directory. contains 3 scripts:
+
+**poc:** 
+this is the main directory. contains 3 scripts:
 * create-local-cluster.sh: this script creates a local Kubernetes cluster based on K3D.
 * delete-local-cluster.sh: this script removes the local cluster
-* setup-poc.sh: this script installs and configure everything neccessary in the cluster (Tekton, Argo CD, Nexus, Sonar, etc...)
+* setup-poc.sh: this script installs and configure everything neccessary in the cluster (Tekton, Argo CD, Nexus, SonarQube, etc...)
   
-**resources:** directory used to manage the two repositories (code and gitops):
+**resources:** 
+directory used to manage the two repositories (code and gitops):
 * sources-repo: source code of the app 
 * gitops-repo: repository used for Kubernetes deployment YAML files.
 
@@ -28,8 +31,8 @@ directory structure:
 k3d is a lightweight wrapper to run k3s (Rancher Lab’s minimal Kubernetes distribution) in docker.
 k3d makes it very easy to create single- and multi-node k3s clusters in docker, e.g. for local development on Kubernetes.
 
-This step is optional. If you already have a cluster, perfect, but if not, you can create a local one based on k3d.
-Ensure you're in the correct directory
+This step is optional. If you already have a cluster, perfect, but if not, you can create a local one based on k3d.  
+Ensure you're in the correct directory..
 
 download k3d:
 ```
@@ -53,11 +56,10 @@ The POC script:
 * Installs Tekton tasks and pipelines
 * Git-clone (from Tekton Hub)
 * Maven (from Tekton Hub)
-* Buildah (from Tekton Hub)
+* Buildah (from Tekton Hub) - builds OCI images
 * Prepare Image (custom task: poc/conf/tekton/tasks/prepare-image-task.yaml)
 * Push to GitOps repo (custom task: poc/conf/tekton/tasks/push-to-gitops-repo.yaml)
-* Installs Argo CD application, configured to check changes in gitops repository (resources/gitops_repo)
-* Update Argo CD password
+* Installs Argo CD application, configured to check changes in GitOps repository (resources/gitops_repo)
 
 ```
 ./setup-poc.sh
