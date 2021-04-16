@@ -33,10 +33,10 @@ initK8SResources() {
   echo '-------------------------------------------------'
 
 # check the Pods status
-  while [[ $(kubectl get pods -l 'app in (nexus)' --all-namespaces -o 'jsonpath={..status.conditions[?(@.type=="Ready")].status}') != "True" ]]; do echo "waiting for the Pods..." && sleep 10; done
-  while [[ $(kubectl get pods -l 'app in (sonarqube)' --all-namespaces -o 'jsonpath={..status.conditions[?(@.type=="Ready")].status}') != "True" ]]; do echo "Pods ready..." && sleep 10; done
-  while [[ $(kubectl get pods -l 'app in (tekton-pipelines-controller)' --all-namespaces -o 'jsonpath={..status.conditions[?(@.type=="Ready")].status}') != "True" ]]; do echo "Pods ready..." && sleep 10; done
-  while [[ $(kubectl get pods -l 'app in (tekton-dashboard)' --all-namespaces -o 'jsonpath={..status.conditions[?(@.type=="Ready")].status}') != "True" ]]; do echo "Pods ready..." && sleep 10; done
+  while [[ $(kubectl get pods -l 'app in (nexus)' --all-namespaces -o 'jsonpath={..status.conditions[?(@.type=="Ready")].status}') != "True" ]]; do echo "waiting for Nexus Pods..." && sleep 10; done
+  while [[ $(kubectl get pods -l 'app in (sonarqube)' --all-namespaces -o 'jsonpath={..status.conditions[?(@.type=="Ready")].status}') != "True" ]]; do echo "waiting for SonarQube Pods..." && sleep 10; done
+  while [[ $(kubectl get pods -l 'app in (tekton-pipelines-controller)' --all-namespaces -o 'jsonpath={..status.conditions[?(@.type=="Ready")].status}') != "True" ]]; do echo "waiting for Tekton pipeline Pods..." && sleep 10; done
+  while [[ $(kubectl get pods -l 'app in (tekton-dashboard)' --all-namespaces -o 'jsonpath={..status.conditions[?(@.type=="Ready")].status}') != "True" ]]; do echo "waiting for Tekton Dashboard Pods..." && sleep 10; done
 }
 
 # set credentials for Nexus
@@ -103,7 +103,7 @@ setupNexus() {
   
 }
 
-# Install Tekton pipelines
+# Install Tekton pipelines, build and use git to push to repository
 installPoCResources() {
   echo ""
   echo "Deploying configmaps, tasks, pipelines and ArgoCD application"
