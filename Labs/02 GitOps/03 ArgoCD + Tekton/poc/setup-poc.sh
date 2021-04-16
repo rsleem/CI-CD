@@ -109,7 +109,6 @@ installPoCResources() {
   kubectl apply -f conf/tekton/git-access -n cicd
   kubectl apply -f conf/tekton/tasks -n cicd
   kubectl apply -f conf/tekton/pipelines -n cicd
-  kubectl patch secret -n argocd argocd-secret -p '{"stringData": { "admin.password": "'$(htpasswd -bnBC 10 "" admin123 | tr -d ':\n')'"}}'
 }
 
 showInfo() {
@@ -131,7 +130,7 @@ showInfo() {
 
   echo "Execute 'kubectl port-forward svc/argocd-server -n argocd 9080:443' to expose the Argo CD console "
   echo "http://localhost:9080"
-  echo "User/Password: admin/admin123"
+  echo "User/Password: admin/"
   echo ""
   echo ""
 }

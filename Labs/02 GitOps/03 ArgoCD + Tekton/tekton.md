@@ -35,7 +35,6 @@ download k3d:
 ```
 curl -s https://raw.githubusercontent.com/rancher/k3d/main/install.sh | bash
 ```
-
 create k3d cluster:
 ```
 ./create-local-cluster.sh
@@ -63,7 +62,7 @@ The POC script:
 ```
 ./setup-poc.sh
 ```
-** Be patient. The process takes some minutes. Ignore the Nexus error.
+** Be patient. The process takes some minutes. Ignore the Nexus error. It will continue..  :)
 
 ---
 
@@ -105,13 +104,16 @@ watch the video..!
 
 to access the ArgoD dashboard:
 ```
-kubectl port-forward svc/argocd-server -n argocd 9080:443
+kubectl port-forward svc/argocd-server -n argocd 9090:8080
 ```
 
-  > in browser: https://localhost:9080
+  > in browser: https://localhost:9090
 
 user: admin
-password: admin123
+password: 
+```
+kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d && echo
+```
 
 In this dashboard you should be the "product service" application that manages synchronization between Kubernetes cluster and GitOps repository.
 
