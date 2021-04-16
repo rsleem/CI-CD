@@ -27,7 +27,7 @@ initK8SResources() {
   kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
 
   echo '-------------------------------------------------'
-  echo 'Be patient while the pods are created'
+  echo 'Be patient while the Pods are created'
   echo '-------------------------------------------------'
 
   while [[ $(kubectl get pods -l 'app in (nexus)' --all-namespaces -o 'jsonpath={..status.conditions[?(@.type=="Ready")].status}') != "True" ]]; do echo "waiting for the Pods..." && sleep 10; done
