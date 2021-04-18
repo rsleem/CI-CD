@@ -1,4 +1,4 @@
 # products-service
 
-Tekton + ArgoCD POC product source files 
+Proyecto de ejemplo para ser usado en la PoC de Tekton y ArgoCD. 
 

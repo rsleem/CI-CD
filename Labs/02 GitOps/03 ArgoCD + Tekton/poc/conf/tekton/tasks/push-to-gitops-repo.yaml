@@ -22,7 +22,7 @@ spec:
         git config --global user.email "jp.oreilly@hotmail.com"
         git config --global user.name "jporeilly"
 
-        git clone -b master $(params.url-gitops) gitops
+        git clone -b main $(params.url-gitops) gitops
         cd gitops/$(params.deployments-dir)
 
         buildDate=$(date '+%Y%m%d%H%M%S')
@@ -31,5 +31,5 @@ spec:
         cat $(params.deployment-file)
 
         git add -u
-        git commit -m "[tekton] updating deployment"
+        git commit -m "[jporeilly] updating deployment"
         git push

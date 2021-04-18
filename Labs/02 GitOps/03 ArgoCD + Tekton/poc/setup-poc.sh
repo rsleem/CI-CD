@@ -1,7 +1,7 @@
 #!/bin/bash
 set -e
 
-# sets the required account details for nexus
+# set Nexus credentials
 nexus_admin_user="admin"
 nexus_final_admin_password="admin123"
 nexus_port="9001"
@@ -19,27 +19,26 @@ echo "                                                            |___/ "
 echo ""
 echo "------------------------------------------------------------------------------------------"
 
-# create the namespaces
+#create namespaces and download Tekton, Tekton dashboard & Argo CD
 initK8SResources() {
   kubectl create namespace cicd | true
   kubectl create namespace argocd | true
   kubectl apply -f https://storage.googleapis.com/tekton-releases/pipeline/latest/release.yaml
-  kubectl apply -f conf/k8s -n cicd
+   kubectl apply -f conf/k8s -n cicd
   kubectl apply -f https://github.com/tektoncd/dashboard/releases/latest/download/tekton-dashboard-release.yaml
-  kubectl apply -n argocd -f kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
+  kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
 
   echo '-------------------------------------------------'
-  echo 'Be patient while the Pods are created'
+  echo 'Be patient... Lots of Pods are being created.. '
   echo '-------------------------------------------------'
 
-# check the Pods status
   while [[ $(kubectl get pods -l 'app in (nexus)' --all-namespaces -o 'jsonpath={..status.conditions[?(@.type=="Ready")].status}') != "True" ]]; do echo "waiting for Nexus Pods..." && sleep 10; done
   while [[ $(kubectl get pods -l 'app in (sonarqube)' --all-namespaces -o 'jsonpath={..status.conditions[?(@.type=="Ready")].status}') != "True" ]]; do echo "waiting for SonarQube Pods..." && sleep 10; done
-  while [[ $(kubectl get pods -l 'app in (tekton-pipelines-controller)' --all-namespaces -o 'jsonpath={..status.conditions[?(@.type=="Ready")].status}') != "True" ]]; do echo "waiting for Tekton pipeline Pods..." && sleep 10; done
-  while [[ $(kubectl get pods -l 'app in (tekton-dashboard)' --all-namespaces -o 'jsonpath={..status.conditions[?(@.type=="Ready")].status}') != "True" ]]; do echo "waiting for Tekton Dashboard Pods..." && sleep 10; done
+  while [[ $(kubectl get pods -l 'app in (tekton-pipelines-controller)' --all-namespaces -o 'jsonpath={..status.conditions[?(@.type=="Ready")].status}') != "True" ]]; do echo "waiting for Tekton-pipelines Pods..." && sleep 10; done
+  while [[ $(kubectl get pods -l 'app in (tekton-dashboard)' --all-namespaces -o 'jsonpath={..status.conditions[?(@.type=="Ready")].status}') != "True" ]]; do echo "waiting for Tekton-dashboards Pods..." && sleep 10; done
 }
 
-# set credentials for Nexus
+# set Nexus account
 setAnonymousAccessAllowed() {
   echo "   ---> Anonymous access allowed: start"
   curl -d "@conf/k8s/data/anonymous_data.json" -H "Content-Type: application/json" --location --request PUT "$nexus_api_base_url/security/anonymous" --user "$nexus_admin_user:$nexus_original_admin_pwd" | true
@@ -83,7 +82,7 @@ waitForNexusReady() {
   nexus_pod_name=$(kubectl get pod -l app=nexus -n cicd --template '{{range .items}}{{.metadata.name}}{{"\n"}}{{end}}')
 
   echo "   ---> Nexus pod name: $nexus_pod_name"
-  printf '   ---> Waiting for Nexus be ready'
+  printf '   ---> Waiting for Nexus...'
   while [[ ! $(kubectl exec "$nexus_pod_name" -n cicd -- cat /nexus-data/admin.password) ]] ;do
     printf '.'
     sleep 10
@@ -94,19 +93,17 @@ waitForNexusReady() {
   echo "   ---> Nexus ready"
 }
 
-# remove temp files
 setupNexus() {
   waitForNexusReady
   waitForNexusAPIBeReady
   setAnonymousAccessAllowed
   updateAdminPassword
-  
 }
 
-# Install Tekton pipelines, build and use git to push to repository
+# resources required for build
 installPoCResources() {
   echo ""
-  echo "Deploying configmaps, tasks, pipelines and ArgoCD application"
+  echo "Deploying configmaps, tasks, pipelines..."
   kubectl create cm maven-settings --from-file=conf/maven/settings.xml -n cicd
   kubectl apply -f conf/argocd
   kubectl apply -f https://raw.githubusercontent.com/tektoncd/catalog/master/task/git-clone/0.2/git-clone.yaml -n cicd
@@ -115,6 +112,7 @@ installPoCResources() {
   kubectl apply -f conf/tekton/git-access -n cicd
   kubectl apply -f conf/tekton/tasks -n cicd
   kubectl apply -f conf/tekton/pipelines -n cicd
+  # kubectl patch secret -n argocd argocd-secret -p '{"stringData": { "admin.password": "'$(htpasswd -bnBC 10 "" admin123 | tr -d ':\n')'"}}'
 }
 
 showInfo() {
@@ -136,8 +134,8 @@ showInfo() {
 
   echo "Execute 'kubectl port-forward svc/argocd-server -n argocd 9080:443' to expose the Argo CD console "
   echo "http://localhost:9080"
-  echo "User/Password: admin/"
-  echo ""
+  echo "User/Password: admin"
+  echo "Execute: 'kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d && echo'"
   echo ""
 }
 
