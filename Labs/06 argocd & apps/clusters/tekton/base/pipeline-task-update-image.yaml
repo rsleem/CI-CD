@@ -20,15 +20,15 @@ spec:
     securityContext:
       privileged: true
     script: |
-      yq w -i $(workspaces.source.path)/gitops-using-argo-cd-and-tekton/$(params.FILE_PATH) $(params.YAML_FIELD) $(params.IMAGE)
+      yq w -i $(workspaces.source.path)/gitops/$(params.FILE_PATH) $(params.YAML_FIELD) $(params.IMAGE)
   - name: git-push
     image: gcr.io/tekton-releases/github.com/tektoncd/pipeline/cmd/git-init:v0.12.1
     securityContext:
       privileged: true
     script: |
-      cd $(workspaces.source.path)/gitops-using-argo-cd-and-tekton
-      git config --global user.email "mail@ricoberger.de"
-      git config --global user.name "ricoberger"
+      cd $(workspaces.source.path)/gitops
+      git config --global user.email "jporeilly@hotmail.com"
+      git config --global user.name "jporeillyr"
       git add $(params.FILE_PATH)
       MESSAGE="Automated commit by Tekton: $(params.SERVICE_NAME): $(params.IMAGE)"
       git commit -m "$MESSAGE"

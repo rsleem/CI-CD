@@ -31,7 +31,7 @@ directory used to manage the two repositories (code and gitops):
 * ensure centos is the owner
 ```
 cd tekton-argocd-poc
-sudo chown -R centos tekton-argocd-poc
+sudo chown -R centos:centos tekton-argocd-poc
 ```
 * ensure the folwoing files are +x
 ```
@@ -39,6 +39,11 @@ cd tekton-argocd-poc/poc
 sudo chmod +x create-local-cluster.sh
 sudo chmod +x delete-local-cluster.sh
 sudo chmod +x setup-poc.sh
+```
+* install tekton CLI
+```
+curl -LO https://github.com/tektoncd/cli/releases/download/v0.17.2/tkn_0.17.2_Linux_x86_64.tar.gz
+sudo tar xvzf tkn_0.17.2_Linux_x86_64.tar.gz -C /usr/local/bin/ tkn
 ```
 
 ---
@@ -51,7 +56,7 @@ k3d makes it very easy to create single- and multi-node k3s clusters in docker, 
 This step is optional. If you already have a cluster, perfect, but if not, you can create a local one based on k3d.  
 Ensure you're in the correct directory..
 
-download k3d:
+download k3d (this step has been completed):
 ```
 curl -s https://raw.githubusercontent.com/rancher/k3d/main/install.sh | bash
 ```
@@ -84,37 +89,6 @@ The POC script:
 ** Be patient. The process takes some minutes. Ignore the Nexus error. It will continue..  :)
 
 ---
-
-#### <font color='red'>Tekton Pipelines</font>
-List of Tekton Pipelines:
-* helloworld
-
-Simple Hello World example to show you how to:
-* create a Task
-* create a Pipeline containing your Tasks
-* use a TaskRun to instantiate and execute a Task outside of a Pipeline
-* use a PipelineRun to instantiate and run a Pipeline containing your Tasks
-
-A Task defines a series of steps that run in a desired order and complete a set amount of build work. Every Task runs as a Pod on your Kubernetes cluster with each step as its own container. 
-
- helloworld-task.yaml
-to register the task:
-```
-kubectl apply -f helloworld-task.yaml
-```
-details about your created Task:
-```
-tkn task describe echo-hello-world
-```
-to run this task:
-```
-kubectl apply -f helloworld-taskrun.yaml
-```
-check status:
-```
-tkn taskrun describe echo-hello-world-task-run
-```
-
 
 #### <font color='red'>Access Tekton + Argo CD + Tests</font>
 
@@ -187,7 +161,43 @@ The application is "healthy" but as the objects associated with Product Service 
 Once the "pipelinerun" ends and changes are pushed to GitOps repository, Argo CD compares content deployed in the Kubernetes cluster (associated to Products Service) with content pushed to the GitOps repository and synchronizes Kubernetes cluster against the repository.
 
 
+---
 
+#### <font color='red'>Tekton Tasks</font>
+List of Tekton Pipelines:
+* helloworld
+
+Simple Hello World example to show you how to:
+* create a Task
+* create a Pipeline containing your Tasks
+* use a TaskRun to instantiate and execute a Task outside of a Pipeline
+* use a PipelineRun to instantiate and run a Pipeline containing your Tasks
+
+A Task defines a series of steps that run in a desired order and complete a set amount of build work. Every Task runs as a Pod on your Kubernetes cluster with each step as its own container. 
+
+create a namespace to run tasks:
+```
+k create namespace tasks 
+```
+* view helloworld-task.yaml
+to register the task:
+```
+kubectl apply -f helloworld-task.yaml -n tasks
+```
+details about your created Task:
+```
+tkn task describe echo-hello-world -n tasks
+```
+* view helloworld-taskrun.yaml
+to run this task:
+```
+kubectl apply -f helloworld-taskrun.yaml -n tasks
+```
+check status:
+```
+tkn taskrun describe echo-hello-world-task-run -n tasks
+```
+* view in tekton dashboard
 
 
 clean up:
