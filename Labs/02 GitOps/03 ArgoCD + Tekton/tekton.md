@@ -10,6 +10,8 @@ In this Lab you will:
 * create a Task
 * run the Task - Taskrun
 
+---
+
 #### <font color='red'>Install k3s Rancher</font>
 k3d is a lightweight wrapper to run k3s (Rancher Lab’s minimal Kubernetes distribution) in docker.
 k3d makes it very easy to create single- and multi-node k3s clusters in docker, e.g. for local development on Kubernetes.
