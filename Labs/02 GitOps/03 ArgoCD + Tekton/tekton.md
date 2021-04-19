@@ -162,8 +162,8 @@ Tasks are useful, but you will usually want to run more than one Task. In fact, 
 
 List of Tekton Pipelines:
 * hello
-* add a parameter
-* multiple steps
+* run sequentially or parallel
+* resources
 
 > lots more examples: https://github.com/tektoncd/pipeline/tree/main/examples/v1beta1/taskruns
 
@@ -200,7 +200,27 @@ kubectl apply -f 02_para-seq/pipeline-order.yaml -n pipelines
 tkn pipeline start say-things-in-order --showlog
 ```
 
+* view in Tekton dashboard
+
 ---
+
+**resources**
+The last object that will be demonstrated in this lab is PipelineResources. When you create pipelines, you will want to make them as generic as you can. This way, your pipelines can be reused across various projects. In the previous examples, we used pipelines that didn't do anything interesting. Typically, you will want to have some input on which you will want to perform your tasks. Usually, this would be a git repository. At the end of your Pipeline, you will also typically want some sort of output. Something like an image. This is where PipelineResources will come into play.
+
+In this next example, you will create a pipeline that will take any git repository as a PipelineResource and then count the number of files.
+
+* First, you can start by creating a task. This Task will be similar to the ones you've created earlier but will also have an input resource.
+* Next, you can create a pipeline that will also have an input resource. This Pipeline will have a single task, which will be the count-files task you've just defined.
+* Finally, you can create a PipelineResource. This resource is of type git, and you can put in the link of a Github repository in the url parameter. You can use the repo for this project.
+
+```
+kubectl apply -f pipeline-resource.yaml -n pipeline
+tkn pipeline start count --showlog
+tkn pipeline start count --showlog --resource git-repo=git-repo
+```
+
+---
+
 
 ## <font color='red'>ArgoCD + Tekton POC</font>
 This POC illustrates GitOps CI/CD pipelines. 
