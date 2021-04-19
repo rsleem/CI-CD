@@ -110,9 +110,8 @@ installPoCResources() {
   kubectl apply -f https://raw.githubusercontent.com/tektoncd/catalog/master/task/maven/0.2/maven.yaml -n cicd
   kubectl apply -f https://raw.githubusercontent.com/tektoncd/catalog/master/task/buildah/0.2/buildah.yaml -n cicd
   kubectl apply -f conf/tekton/git-access -n cicd
-  kubectl apply -f conf/tekton/tasks -n cicd
-  kubectl apply -f conf/tekton/pipelines -n cicd
-  # kubectl patch secret -n argocd argocd-secret -p '{"stringData": { "admin.password": "'$(htpasswd -bnBC 10 "" admin123 | tr -d ':\n')'"}}'
+  # kubectl apply -f conf/tekton/tasks -n cicd
+  # kubectl apply -f conf/tekton/pipelines -n cicd
 }
 
 showInfo() {
