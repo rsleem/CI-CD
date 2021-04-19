@@ -76,14 +76,17 @@ access the pipline:
 ---
 
 #### <font color='red'>Tekton Tasks</font>
-List of Tekton Pipelines:
+List of Tekton Tasks:
 * helloworld
+* configmap
+* authenticating-git-commands
+
+> lots more examples: https://github.com/tektoncd/pipeline/tree/main/examples/v1beta1/taskruns
+
 
 Simple Hello World example to show you how to:
 * create a Task
-* create a Pipeline containing your Tasks
 * use a TaskRun to instantiate and execute a Task outside of a Pipeline
-* use a PipelineRun to instantiate and run a Pipeline containing your Tasks
 
 A Task defines a series of steps that run in a desired order and complete a set amount of build work. Every Task runs as a Pod on your Kubernetes cluster with each step as its own container. 
 
@@ -109,9 +112,10 @@ check status:
 ```
 tkn taskrun describe echo-hello-world-task-run -n tasks
 ```
-* view in tekton dashboard
+* view in Tekton dashboard
 
 ---
+
 
 ## <font color='red'>ArgoCD + Tekton POC</font>
 This POC illustrates GitOps CI/CD pipelines. 
