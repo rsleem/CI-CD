@@ -1,4 +1,4 @@
-## <font color='red'>Argo CD + Tekton</font>
+## <font color='red'>2.3 Argo CD + Tekton</font>
 Argo CD watches cluster objects stored in a Git repository and manages the create, update, and delete (CRUD) processes for objects within the repository. Tekton is a CI/CD tool that handles all parts of the development lifecycle, from building images to deploying cluster objects.
 
 In this Lab you will:
@@ -12,7 +12,7 @@ In this Lab you will:
 
 ---
 
-#### <font color='red'>Install k3s Rancher</font>
+#### <font color='red'>2.3.1 Install k3s Rancher</font>
 k3d is a lightweight wrapper to run k3s (Rancher Lab’s minimal Kubernetes distribution) in docker.
 k3d makes it very easy to create single- and multi-node k3s clusters in docker, e.g. for local development on Kubernetes.
 
@@ -30,7 +30,7 @@ create k3d cluster:
 
 ---
 
-#### <font color='red'>Install Tekton + Argo CD</font>
+#### <font color='red'>2.3.2 Install Tekton + Argo CD</font>
 Theres a script:
 * Installs Tekton + Argo CD, including secrets to access to Git repo
 * Creates the volume and claim necessary to execute pipelines
@@ -46,7 +46,7 @@ run the script:
 
 ---
 
-#### <font color='red'>Access Argo CD + Tekton</font>
+#### <font color='red'>2.3.3 Access Argo CD + Tekton</font>
 to access the ArgoD dashboard:
 ```
 kubectl port-forward svc/argocd-server -n argocd 9070:443
@@ -75,25 +75,31 @@ access the pipline:
 
 ---
 
-#### <font color='red'>Tekton Tasks</font>
+#### <font color='red'>2.3.4 Tekton Tasks</font>
 List of Tekton Tasks:
 * helloworld
-* configmap
-* authenticating-git-commands
+* add a parameter
+* multiple steps
 
 > lots more examples: https://github.com/tektoncd/pipeline/tree/main/examples/v1beta1/taskruns
 
+* ensure you're in the Tasks directory..
 
+create a namespace to run tasks:
+```
+k create namespace tasks 
+```
+
+---
+
+**hello world**
 Simple Hello World example to show you how to:
 * create a Task
 * use a TaskRun to instantiate and execute a Task outside of a Pipeline
 
 A Task defines a series of steps that run in a desired order and complete a set amount of build work. Every Task runs as a Pod on your Kubernetes cluster with each step as its own container. 
 
-create a namespace to run tasks:
-```
-k create namespace tasks 
-```
+
 * view helloworld-task.yaml
 to register the task:
 ```
@@ -113,6 +119,36 @@ check status:
 tkn taskrun describe echo-hello-world-task-run -n tasks
 ```
 * view in Tekton dashboard
+
+---
+
+**add a parameter**
+
+Tasks can also take parameters. This way, you can pass various flags to be used in this Task. These parameters can be instrumental in making your Tasks more generic and reusable across Pipelines.
+
+In this next example, you will create a task that will ask for a person's name and then say Hello to that person.
+
+Starting with the previous example, you can add a params property to your task's spec. A param takes a name and a type. You can also add a description and a default value for this Task.
+
+For this parameter, the name is person, the description is Name of person to greet, the default value is World, and the type of parameter is a string. If you don't provide a parameter to this Task, the greeting will be "Hello World".
+
+You can then access those params by using variable substitution. In this case, change the word "World" in the args line to $(params.person).
+
+kubectl apply -f 02_add-param/param.yaml -n tasks
+tkn task start --showlog hello
+tkn task start --showlog -p person=James hello
+
+---
+
+**multiple tasks**
+Your tasks can have more than one step. In this next example, you will change this Task to use two steps. The first one will write to a file, and the second one will output the content of that file. The steps will run in the order in which they are defined in the steps array.
+
+First, start by adding a new step called write-hello. In here, you will use the same UBI base image. Instead of using a single command, you can also write a script. You can do this with a script parameter, followed by a | and the actual script to run. In this script, start by echoing "Preparing greeting", then echo the "Hello $(params.person)" that you had in the previous example into the ~/hello.txt file. Finally, add a little pause with the sleep command and echo "Done".
+
+For the second step, you can create a new step called say-hello. This second step will run in its container but share the /tekton folder from the previous step. In the first step, you created a file in the "~" folder, which maps to "/tekton/home". For this second step, you can use an image node:14, and the file you created in the first step will be accessible. You can also run a NodeJS script as long as you specify the executable in the #! line of your script. In this case, you can write a script that will output the content of the ~/hello.txt file.
+
+kubectl apply -f multistep.yaml
+tkn task start --showlog hello
 
 ---
 
