@@ -156,16 +156,31 @@ tkn task start --showlog hello
 
 
 #### <font color='red'>2.3.4 Tekton Pipelines</font>
+Tasks are useful, but you will usually want to run more than one Task. In fact, tasks should do one single thing so you can reuse them across pipelines or even within a single pipeline. For this next example, you will start by writing a generic task that will echo whatever it receives in the parameters.
+
+List of Tekton Pipelines:
+* hello
+* add a parameter
+* multiple steps
+
+> lots more examples: https://github.com/tektoncd/pipeline/tree/main/examples/v1beta1/taskruns
+
+* ensure you're in the Pipelines directory..
+
+create a namespace to run pipelines:
+```
+k create namespace pipelines 
+```
+
+---
+
+**hello**
+A pipeline is a series of tasks that can run either in parallel or sequentially. In this Pipeline, you will use the say-something tasks twice with different outputs.
 
 
 
 
-
-
-
-
-
-
+---
 
 ## <font color='red'>ArgoCD + Tekton POC</font>
 This POC illustrates GitOps CI/CD pipelines. 
