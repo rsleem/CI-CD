@@ -45,6 +45,7 @@ setAnonymousAccessAllowed() {
   echo "   ---> Anonymous access allowed: end"
 }
 
+# change Nexus password
 updateAdminPassword() {
   echo "   ---> Admin password updated: start"
   curl --data-raw "$nexus_final_admin_password" -H "Content-Type: text/plain" --location --request PUT "$nexus_api_base_url/security/users/$nexus_admin_user/change-password" --user "$nexus_admin_user:$nexus_original_admin_pwd" | true
@@ -74,7 +75,7 @@ waitForNexusAPIBeReady() {
       attempt_counter=$(($attempt_counter+1))
       sleep 10
   done
-  echo "   ---> Nexus API ready"
+  echo "Nexus API ready..."
 }
 
 waitForNexusReady() {
@@ -89,8 +90,8 @@ waitForNexusReady() {
   done
 
   nexus_original_admin_pwd=$(kubectl exec "$nexus_pod_name" -n cicd -- cat /nexus-data/admin.password)
-  echo "   ---> Admin pass: $nexus_original_admin_pwd"
-  echo "   ---> Nexus ready"
+  echo " Nexus admin pass: $nexus_original_admin_pwd"
+  echo " Nexus ready..."
 }
 
 setupNexus() {
@@ -110,8 +111,8 @@ installPoCResources() {
   kubectl apply -f https://raw.githubusercontent.com/tektoncd/catalog/master/task/maven/0.2/maven.yaml -n cicd
   kubectl apply -f https://raw.githubusercontent.com/tektoncd/catalog/master/task/buildah/0.2/buildah.yaml -n cicd
   kubectl apply -f conf/tekton/git-access -n cicd
-  # kubectl apply -f conf/tekton/tasks -n cicd
-  # kubectl apply -f conf/tekton/pipelines -n cicd
+  # kubectl apply -f conf/tekton/tasks -n cicd - added later
+  # kubectl apply -f conf/tekton/pipelines -n cicd - added later
 }
 
 showInfo() {
