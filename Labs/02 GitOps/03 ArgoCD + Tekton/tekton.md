@@ -133,10 +133,11 @@ Starting with the previous example, you can add a params property to your task's
 For this parameter, the name is person, the description is Name of person to greet, the default value is World, and the type of parameter is a string. If you don't provide a parameter to this Task, the greeting will be "Hello World".
 
 You can then access those params by using variable substitution. In this case, change the word "World" in the args line to $(params.person).
-
+```
 kubectl apply -f 02_add-param/param.yaml -n tasks
 tkn task start --showlog hello
 tkn task start --showlog -p person=James hello
+```
 
 ---
 
@@ -146,11 +147,24 @@ Your tasks can have more than one step. In this next example, you will change th
 First, start by adding a new step called write-hello. In here, you will use the same UBI base image. Instead of using a single command, you can also write a script. You can do this with a script parameter, followed by a | and the actual script to run. In this script, start by echoing "Preparing greeting", then echo the "Hello $(params.person)" that you had in the previous example into the ~/hello.txt file. Finally, add a little pause with the sleep command and echo "Done".
 
 For the second step, you can create a new step called say-hello. This second step will run in its container but share the /tekton folder from the previous step. In the first step, you created a file in the "~" folder, which maps to "/tekton/home". For this second step, you can use an image node:14, and the file you created in the first step will be accessible. You can also run a NodeJS script as long as you specify the executable in the #! line of your script. In this case, you can write a script that will output the content of the ~/hello.txt file.
-
-kubectl apply -f multistep.yaml
+```
+kubectl apply -f 03_multi-steps/step.yaml -n tasks
 tkn task start --showlog hello
+```
 
 ---
+
+
+#### <font color='red'>2.3.4 Tekton Pipelines</font>
+
+
+
+
+
+
+
+
+
 
 
 ## <font color='red'>ArgoCD + Tekton POC</font>
