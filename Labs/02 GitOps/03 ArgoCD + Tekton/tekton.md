@@ -135,9 +135,10 @@ For this parameter, the name is person, the description is Name of person to gre
 You can then access those params by using variable substitution. In this case, change the word "World" in the args line to $(params.person).
 ```
 kubectl apply -f 02_add-param/param.yaml -n tasks
-tkn task start --showlog hello
-tkn task start --showlog -p person=James hello
+tkn task start --showlog hello -n tasks
+tkn task start --showlog -p person=James hello -n tasks
 ```
+* view in Tekton dashboard
 
 ---
 
@@ -149,8 +150,9 @@ First, start by adding a new step called write-hello. In here, you will use the 
 For the second step, you can create a new step called say-hello. This second step will run in its container but share the /tekton folder from the previous step. In the first step, you created a file in the "~" folder, which maps to "/tekton/home". For this second step, you can use an image node:14, and the file you created in the first step will be accessible. You can also run a NodeJS script as long as you specify the executable in the #! line of your script. In this case, you can write a script that will output the content of the ~/hello.txt file.
 ```
 kubectl apply -f 03_multi-steps/step.yaml -n tasks
-tkn task start --showlog hello
+tkn task start --showlog hello -n tasks
 ```
+* view in Tekton dashboard
 
 ---
 
@@ -177,8 +179,26 @@ k create namespace pipelines
 **hello**
 A pipeline is a series of tasks that can run either in parallel or sequentially. In this Pipeline, you will use the say-something tasks twice with different outputs.
 
+You can now apply the Task and this new Pipeline to your cluster and start the Pipeline. Using tkn pipeline start will create a PipelineRun with a random name. You can also see the logs of the Pipeline by using the --showlog parameter.
 
+```
+kubectl apply -f 01_hello/tasks.yaml -n pipelines
+kubectl apply -f 01_hello/pipeline.yaml -n pipelines
+tkn pipeline start say-things --showlog -n pipelines
+```
 
+* view in Tekton dashboard
+
+---
+
+**run sequentially or parallel**
+For Tasks to run in a specific order, the runAfter parameter is needed in the task definition of your Pipeline.
+The runAfter parameter is being applied to specific numbered tasks, and after applying this Pipeline to our cluster, we’ll be able to see logs from each task, but ordered:
+
+```
+kubectl apply -f 02_para-seq/pipeline-order.yaml -n pipelines
+tkn pipeline start say-things-in-order --showlog
+```
 
 ---
 
