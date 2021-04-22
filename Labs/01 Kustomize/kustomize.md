@@ -174,8 +174,8 @@ switch to helloworld directory and tree:
 ```
 tree
 ```
-* view the deployment.yaml #changing the replica count
-* view the kustomization.yaml #matched on labels and the patched & mergred with base/deployment.yaml
+* view the deployment.yaml    <em># changing the replica count</em>
+* view the kustomization.yaml <em># matched on labels and the patched & mergred with base/deployment.yaml</em>
 
 deploy production variant:
 ```
