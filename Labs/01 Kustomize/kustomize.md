@@ -140,8 +140,8 @@ switch to helloworld directory and tree:
 ```
 tree
 ```
-* view the map.yaml <font color='green'><em>#changing the configmap values</font>
-* view the kustomization.yaml <font color='green'><em>#matched on labels and the patched & mergred with base/deployment.yaml</font>
+* view the map.yaml <font color='green'><em>#changing the configmap values</em></font>
+* view the kustomization.yaml <font color='green'><em>#matched on labels and the patched & mergred with base/deployment.yaml</em></font>  
 
 deploy staging variant:
 ```
