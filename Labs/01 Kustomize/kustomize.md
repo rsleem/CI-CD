@@ -140,8 +140,8 @@ switch to helloworld directory and tree:
 ```
 tree
 ```
-* view the map.yaml #changing the configmap values
-* view the kustomization.yaml #matched on labels and the patched & mergred with base/deployment.yaml
+* view the map.yaml <font color='green'><em>#changing the configmap values</font>
+* view the kustomization.yaml <font color='green'><em>#matched on labels and the patched & mergred with base/deployment.yaml</font>
 
 deploy staging variant:
 ```
@@ -174,8 +174,8 @@ switch to helloworld directory and tree:
 ```
 tree
 ```
-* view the deployment.yaml    <em># changing the replica count</em>
-* view the kustomization.yaml <em># matched on labels and the patched & mergred with base/deployment.yaml</em>
+* view the deployment.yaml    <font color='green'><em>#changing the replica count</em></font>
+* view the kustomization.yaml <font color='green'><em>#matched on labels and the patched & merged with base/deployment.yaml</em></font>
 
 deploy production variant:
 ```
