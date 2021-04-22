@@ -76,7 +76,7 @@ In this lab we're going to:
 * deploy helloworld app
 * verify deployment
 
-switch to helloworld directory.
+* switch to hello-world directory.
 
 tree the base directory:
 ```
