@@ -116,7 +116,7 @@ skaffold init
 ```
 Note: Save the skaffold.yaml file.  There's a skaffold.yaml.bak just in case..!
 
-Open the skaffold.yaml file
+Open the skaffold.yaml file  
 Notice its detected that the app will be deployed using kustomize.
 
 just deploy the app once:
