@@ -77,7 +77,9 @@ kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.pas
 
 #### <font color='red'> 1.1.2 Deploy a Guestbook App </font>
 
-**watch the video to deploy the guestbook app**
+* guestbook - kubectl
+* guestbook - kustomize
+* guestbook - helm
 
 verify status and configuration of your app
 
@@ -90,6 +92,11 @@ port-forward to expose app on localhost:9090:
 ```
 kubectl port-forward svc/guestbook -n default 9090:8080
 ```
+
+
+  > more examples can be found: https://github.com/argoproj/argocd-example-apps
+
+
 
 clean up:
 
