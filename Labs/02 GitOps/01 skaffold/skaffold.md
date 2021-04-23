@@ -14,7 +14,6 @@ list of projects:
 * getting-started-kustomize - deploys app with kustomize to 3 environments (dev, staging, prod) 
 
 
-
 ---
 
 #### <font color='red'>IMPORTANT:</font> 
@@ -129,14 +128,5 @@ clean up
 ```
 skaffold delete
 ```
-
----
-
-
-
-
-
-
-
 
 ---

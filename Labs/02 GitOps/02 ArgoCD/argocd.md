@@ -3,13 +3,7 @@ Argo CD is a declarative, GitOps continuous delivery tool for Kubernetes.
 
 In this lab we're going to:
 * install Argo CD
-* deploy an application
-
-list of apps:
-* guestbook - deploys app with kubectl
-* 
-
-
+* deploy a guestbook application
 
 ---
 
