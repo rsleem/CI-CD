@@ -241,4 +241,10 @@ kg all -n nginx
 ```
 Note: you can expose the service or port-forward to the service.
 
+
+clean up:
+```
+kustomize build nginx | kubectl delete -f -
+```
+
 ---
