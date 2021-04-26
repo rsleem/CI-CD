@@ -20,7 +20,7 @@ to delete  minikube:
 minikube delete
 ```
 
-#### <font color='red'> 1.1.1 K8s Cluster </font>
+#### <font color='red'> 2.2.1 K8s Cluster </font>
 The next step is to create Kubernetes cluster: 
 * install minikube
 * enable Ingress addon
@@ -40,7 +40,7 @@ ksysgpo
 
 ---
 
-#### <font color='red'> 1.1.1 Install ArgoCD </font>
+#### <font color='red'> 2.2.2 Install ArgoCD </font>
 The next step is to: 
 * install ArgoCD
 
@@ -50,7 +50,11 @@ kubectl create namespace argocd
 ```
 install argocd:
 ```
-kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/v2.0.0/manifests/install.yaml
+kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
+```
+watch the Pods:
+```
+watch kubectl get pods -n argocd
 ```
 verify deployed ArgoCD:
 ```
@@ -75,7 +79,7 @@ kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.pas
 
 ---
 
-#### <font color='red'> 1.1.2 Deploy a Guestbook App </font>
+#### <font color='red'> 2.2.3 Deploy a Guestbook App </font>
 
 * guestbook - kubectl
 * guestbook - kustomize
@@ -88,17 +92,26 @@ Notice: the STATUS: OutOfSync and HEALTH: Missing. That’s because ArgoCD creat
 “Sync” is the terminology ArgoCD uses to describe the application on your target cluster as being up to date with the sources ArgoCD is pulling from. 
 You have set up ArgoCD to monitor the GitHub repository with the configuration files. Once the initial sync is completed, a change will cause the status in ArgoCD to change to OutOfSync.
 
-port-forward to expose app on localhost:9090:
+get the guestbook ClusterIP:
 ```
-kubectl port-forward svc/guestbook -n default 9090:8080
+kg all -n guestbook -o wide
 ```
+guestbook can then be accessed at:
+
+ > in browser: http://[svc-ClusterIP]
+
+ 
+ 
+ > more examples can be found: https://github.com/argoproj/argocd-example-apps
 
 
-  > more examples can be found: https://github.com/argoproj/argocd-example-apps
 
 
 
 clean up:
+```
+
+```
 
 ---
 
