@@ -80,7 +80,7 @@ kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.pas
 ---
 
 #### <font color='red'> 2.2.3 Deploy a Guestbook App </font>
-
+There are a couple of apps you can deploy at: http://github.com/jporeilly/ArgoCd-demos.git
 * guestbook - kubectl
 * guestbook - kustomize
 * guestbook - helm
