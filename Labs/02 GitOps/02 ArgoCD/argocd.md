@@ -20,27 +20,21 @@ to delete  minikube:
 minikube delete
 ```
 
-#### <font color='red'> 2.2.1 K8s Cluster </font>
-The next step is to create Kubernetes cluster: 
+the next step is to create Kubernetes cluster: 
 * install minikube
-* enable Ingress addon
 
 start minikube:
 ```
 minikube start
 ```
-enable Ingress:
+start tunnel:
 ```
-minikube addons enable ingress
-```
-verify ingress:
-```
-ksysgpo
+minikube tunnel
 ```
 
 ---
 
-#### <font color='red'> 2.2.2 Install ArgoCD </font>
+#### <font color='red'> 2.2.1 Install ArgoCD </font>
 The next step is to: 
 * install ArgoCD
 
@@ -79,13 +73,15 @@ kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.pas
 
 ---
 
-#### <font color='red'> 2.2.3 Deploy a Guestbook App </font>
+#### <font color='red'> 2.2.2 Deploy a Guestbook App </font>
 There are a couple of apps you can deploy at: http://github.com/jporeilly/ArgoCd-demos.git
 * guestbook - kubectl
 * guestbook - kustomize
 * guestbook - helm
 
-verify status and configuration of your app
+In this lab were going to deploy the guestbook - kubectl app.
+
+**watch the video to see how to add an app** 
 
 Notice: the STATUS: OutOfSync and HEALTH: Missing. That’s because ArgoCD creates applications with manual triggers by default.  
 
@@ -101,19 +97,18 @@ guestbook can then be accessed at:
  > in browser: http://[svc-ClusterIP]
 
  
- 
  > more examples can be found: https://github.com/argoproj/argocd-example-apps
 
 
-
-
-
 clean up:
-```
 
+to stop  minikube:
+```
+minikube stop
+```
+to delete  minikube:
+```
+minikube delete
 ```
 
 ---
-
-#### <font color='red'> 1.1.2 Deploy App of Apps pattern </font>
-Declaratively specify one Argo CD app that consists only of other apps.
