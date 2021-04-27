@@ -94,8 +94,9 @@ kg all -n guestbook -o wide
 ```
 guestbook can then be accessed at:
 
- > in browser: http://[svc-ClusterIP]
+ > in browser: http://[svc-ClusterIP]  
 
+</br>
  
  > more examples can be found: https://github.com/argoproj/argocd-example-apps
 
