@@ -34,9 +34,13 @@ minikube tunnel
 
 
 **Pre-requisties:**
+* GitHub Account
 If you want to try these GitHub actions you will require a GitHub account.
 
-* Docker Hub
+  > https://github.com/join
+
+
+
 
 
 ---
