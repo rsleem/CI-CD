@@ -46,6 +46,11 @@ Don't worry if you dont have access as the videos will guide you through the wor
 #### <font color='red'>2.3.1 GitHub Actions</font>
 You can set up continuous integration for your project using a workflow template that matches the language and tooling you want to use.
 
+List of GitHub Actions:
+* 
+
+
+
 
 start minikube:
 ```
