@@ -39,13 +39,11 @@ If you want to try these GitHub actions you will require a GitHub account.
 
   > https://github.com/join
 
-
-
-
+Don't worry if you dont have access as the videos will guide you through the workflows.
 
 ---
 
-#### <font color='red'>2.3.1 nstall Dev minikube Cluster + Ingress </font>
+#### <font color='red'>2.3.1 GitHub Actions</font>
 You can set up continuous integration for your project using a workflow template that matches the language and tooling you want to use.
 
 
