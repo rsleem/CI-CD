@@ -29,7 +29,19 @@ to delete  minikube:
 minikube delete
 ```
 
+start minikube:
+```
+minikube start
+```
+minikube tunnel:
+```
+minikube tunnel
+```
+
+
+
 **Pre-requistes:**
+These tools have already been installed and configured.
 verify kustomize:
 ```
 kustomize version
@@ -43,21 +55,6 @@ verify skaffold:
 skaffold version
 ```
 
----
-
-#### <font color='red'> 1.1.1 K8s Cluster </font>
-The next step is to create Kubernetes cluster: 
-* install minikube
-* check kustomize
-
-start minikube:
-```
-minikube start
-```
-minikube tunnel:
-```
-minikube tunnel
-```
 
 ---
 

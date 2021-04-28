@@ -1,8 +1,10 @@
-## <font color='red'> 1.1 K8s Cluster </font>
-Lab demonstrates a possible GitOps workflow using Argo CD and Tekton. We are using Argo CD to setup our Kubernetes clusters dev and prod (in the following we will only use the dev cluster) and Tekton to build and update our example application.
+## <font color='red'> 3.1 GitHub Actions </font>
+GitHub Actions help you automate tasks within your software development life cycle. GitHub Actions are event-driven, meaning that you can run a series of commands after a specified event has occurred. For example, every time someone creates a pull request for a repository, you can automatically run a command that executes a software testing script.
+
+  > For further information: https://docs.github.com/en/actions
 
 In this lab we're going to:
-* install Dev minikube cluster
+* create a simple GitHub action
 * enable Ingress controller
 
 
@@ -21,32 +23,18 @@ to delete  minikube:
 minikube delete
 ```
 
----
-
-Pre-requisties:
-* Kustomize is a standalone tool to customize Kubernetes objects through a kustomization file. Since 1.14, Kubectl also supports the management of Kubernetes objects using a kustomization file.
-
-ensure kustomize has been installed:
+start minikube:
 ```
-sudo snap install kustomize 
+minikube start
 ```
-
-* Helm is a package manager for Kubernetes that allows developers and operators to more easily package, configure, and deploy applications and services onto Kubernetes clusters.
-ensure helm is installed:
+minikube tunnel:
 ```
-curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3
-```
-change permission so can execute:
-```
-chmod 700 get_helm.sh
-```
-install helm:
-```
-./get_helm.sh
+minikube tunnel
 ```
 
-* GitOps is a way to do Kubernetes cluster management and application delivery.  It works by using Git as a single source of truth for declarative infrastructure and applications. With GitOps, the use of software agents can alert on any divergence between Git with what's running in a cluster, and if there's a difference, Kubernetes reconcilers automatically update or rollback the cluster depending on the case. With Git at the center of your delivery pipelines, developers use familiar tools to make pull requests to accelerate and simplify both application deployments and operations tasks to Kubernetes.
 
+**Pre-requisties:**
+If you want to try these GitHub actions 
 you will require a GitHub account.
 
 * Docker Hub
