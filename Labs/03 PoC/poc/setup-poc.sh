@@ -132,8 +132,8 @@ showInfo() {
   echo "User/Password: admin/admin"
   echo "-----"
 
-  echo "Execute 'kubectl port-forward svc/argocd-server -n argocd 9080:443' to expose the Argo CD console "
-  echo "http://localhost:9080"
+  echo "Execute 'kubectl port-forward svc/argocd-server -n argocd 9070:443' to expose the Argo CD console "
+  echo "http://localhost:9070"
   echo "User/Password: admin"
   echo "Execute: 'kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d && echo'"
   echo ""
