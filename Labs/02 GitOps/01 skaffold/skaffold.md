@@ -121,6 +121,35 @@ just deploy the app once:
 skaffold run
 ```
 
+**getting-started-docker**  
+Getting started with a simple go app.
+This is a simple example based on:
+* building a single Go file app and with a multistage Dockerfile using local docker to build
+* tagging using the default tagPolicy (gitCommit)
+* deploying a single container pod using kubectl
+* push to Docker Hub & retag
+* rebuild skaffold init
+* create deployment.yaml - reference Docker image
+
+switch to getting-started-docker directory:  
+
+build a skaffold.yaml:
+```
+skaffold init
+```
+Note: Save the skaffold.yaml file.  There's a skaffold.yaml.bak just in case..!
+
+Open the skaffold.yaml file
+Notice its detected that the app will be deployed using kubectl.
+
+deploy app:
+```
+skaffold dev --no-prune=false --cache-artifacts=false
+```
+
+
+
+
   > further examples can be found at: https://github.com/GoogleContainerTools/skaffold
 
 
