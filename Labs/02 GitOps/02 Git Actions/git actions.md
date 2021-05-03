@@ -35,10 +35,9 @@ So lets dive in the deep end and create a workflow thats shows whats happening b
 
   > GitHub Actions repository:  http://github.com/jporeilly/GitHub-Actions.git
 
-
-create a new branch for the workflow: github-actions-demo
-
-then add this workflow - github-actions-demo.yaml - to the github-actions-demo/.github/workflows/  directory:
+**github actions demo**
+* create a new branch for the workflow: github-actions-demo
+* then add this workflow - github-actions-demo.yaml - to the github-actions-demo/.github/workflows/  directory:
 
 ```
 name: GitHub Actions Demo
@@ -60,14 +59,17 @@ jobs:
       - run: echo "🍏 This job's status is ${{ job.status }}."
 ```
 
-This will trigger a push event.
+* This will trigger a push event.
+* On GitHub, navigate to the main page of the repository.
+* Under your repository name, click Actions.
+* In the left sidebar, click the workflow you want to see.
+* From the list of workflow runs, click the name of the run you want to see.
+* Under Jobs, click the Explore-GitHub-Actions job.
 
-On GitHub, navigate to the main page of the repository.
+**hello world**
+* create a new branch for the workflow: hello-world
+* then add this workflow - hello-world.yaml - to the hello-world/.github/workflows/  directory:
 
-Under your repository name, click Actions.
+```
 
-In the left sidebar, click the workflow you want to see.
-
-From the list of workflow runs, click the name of the run you want to see.
-
-Under Jobs, click the Explore-GitHub-Actions job.
+```
