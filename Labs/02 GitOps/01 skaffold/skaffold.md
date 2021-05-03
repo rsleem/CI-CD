@@ -174,7 +174,7 @@ docker images
 ```
 from the image create a deployment manifest:
 
-kubectl create deployment skaffold-example -o  --image=gcr.io/jporeilly/skaffold-example:v1
+kubectl create deployment skaffold-example -o K8s-skaffold-deployment.yaml --image=gcr.io/jporeilly/skaffold-example:v1 dry-run 
 
 
 
