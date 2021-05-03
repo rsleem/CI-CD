@@ -123,6 +123,7 @@ skaffold run
 
 **getting-started-docker**  
 Getting started with a simple go app.
+You will need a Docker Hub account.
 This is a simple example based on:
 * building a single Go file app and with a multistage Dockerfile using local docker to build
 * tagging using the default tagPolicy (gitCommit)
@@ -131,8 +132,18 @@ This is a simple example based on:
 * rebuild skaffold init
 * create deployment.yaml - reference Docker image
 
-switch to getting-started-docker directory:  
+switch to getting-started-docker directory: 
 
+log in to Docker Hub:
+```
+sudo docker login
+```
+you can set the or push it later:
+
+set Skaffold’s global repository config:
+```
+skaffold config set default-repo [name of repo]
+```
 build a skaffold.yaml:
 ```
 skaffold init
@@ -146,9 +157,18 @@ deploy app:
 ```
 skaffold dev --no-prune=false --cache-artifacts=false
 ```
+push the image to a docker repository accessible to GitHub. It could be the private docker image repository in GitHub or any other repository which is accessible to GitLab.
 
-
-
+rename local image:
+```
+sudo docker tag [local-image-name:tagname] [reponame:tag]
+sudo docker tag skaffold-example:3fddbc1-dirty jporeilly/skaffold-example:latest
+```
+push the image to registry:
+```
+sudo docker push [Docker Hub Username]/[image-name]:latest
+sudo docker push jporeilly/skaffold-example:latest
+```
 
   > further examples can be found at: https://github.com/GoogleContainerTools/skaffold
 
