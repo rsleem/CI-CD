@@ -10,9 +10,32 @@ In this Lab you will:
 * create a Task
 * run the Task - Taskrun
 
+For those of you that want to have some fun, SonarQube and Nexus have also been installed and configured.
+
+**Sonarqube**
+the tests run:
+* SonarQube® is an automatic code review tool to detect bugs, vulnerabilities, and code smells in your code. It can integrate with your existing workflow to enable continuous code inspection across your project branches and pull requests.
+to access Sonarqube to check quality issues:
+
+  > in browser: http://localhost:9000/projects
+
+user: admin
+password: admin123  
+
+**Nexus**
+Nexus is a repository manager. It allows you to proxy, collect, and manage your dependencies so that you are not constantly juggling a collection of JARs.
+
+access Nexus to check the artifact has been published:
+
+  > in browser: http://localhost:9001
+
+user: admin
+password: admin123 
+
+
 ---
 
-#### <font color='red'>2.3.1 Install k3s Rancher</font>
+#### <font color='red'>3.3.1 Install k3s Rancher</font>
 k3d is a lightweight wrapper to run k3s (Rancher Lab’s minimal Kubernetes distribution) in docker.
 k3d makes it very easy to create single- and multi-node k3s clusters in docker, e.g. for local development on Kubernetes.
 
@@ -30,7 +53,7 @@ create k3d cluster:
 
 ---
 
-#### <font color='red'>2.3.2 Install Tekton + Argo CD</font>
+#### <font color='red'>3.3.2 Install Tekton + Argo CD</font>
 Theres a script:
 * Installs Tekton + Argo CD, including secrets to access to Git repo
 * Creates the volume and claim necessary to execute pipelines
@@ -46,7 +69,7 @@ run the script:
 
 ---
 
-#### <font color='red'>2.3.3 Access Argo CD + Tekton</font>
+#### <font color='red'>3.3.3 Access Argo CD + Tekton</font>
 to access the ArgoD dashboard:
 ```
 kubectl port-forward svc/argocd-server -n argocd 9070:443
@@ -75,7 +98,7 @@ access the pipline:
 
 ---
 
-#### <font color='red'>2.3.4 Tekton Tasks</font>
+#### <font color='red'>3.3.4 Tekton Tasks</font>
 List of Tekton Tasks:
 * helloworld
 * add a parameter
@@ -157,7 +180,7 @@ tkn task start --showlog hello -n tasks
 ---
 
 
-#### <font color='red'>2.3.4 Tekton Pipelines</font>
+#### <font color='red'>3.3.5 Tekton Pipelines</font>
 Tasks are useful, but you will usually want to run more than one Task. In fact, tasks should do one single thing so you can reuse them across pipelines or even within a single pipeline. For this next example, you will start by writing a generic task that will echo whatever it receives in the parameters.
 
 List of Tekton Pipelines:
