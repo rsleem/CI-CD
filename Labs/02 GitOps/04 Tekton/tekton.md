@@ -6,6 +6,11 @@ In this lab we're going to:
 * install Tekton CLI
 * install Tekton Dashboard on Kubernetes
 
+* run the application tests inside the cloned git repository
+* build a Docker image for our Go application and push it to DockerHub
+
+**The second part requires a Docker Hub account.**
+
 ---
 
 #### <font color='red'>IMPORTANT:</font> 
@@ -72,12 +77,13 @@ access the Dashboard is using kubectl port-forward:
 kubectl --namespace tekton-pipelines port-forward svc/tekton-dashboard 9097:9097
 ```
 
+  > view dashboard: http://localhost:9097
+
 ---
 
 #### <font color='red'>4.3.2 Tekton Piepline</font>
 In our first tekton pipeline a Go application simply prints the sum of two integers.
 * run the application tests inside the cloned git repository
-* build a Docker image for our Go application and push it to DockerHub
 
 The required resource files can be found at:
 
@@ -173,8 +179,132 @@ Instead of manually writing a TaskRun manifest we can run the following command 
 tkn task start test --inputresource repo=tekton-example --showlog
 ```
 
+---
 
+#### <font color='red'>4.3.3 Tekton Piepline - Docker</font>
+In our second tekton pipeline a Go application simply prints the sum of two integers.
+* build a Docker image for our Go application and push it to DockerHub
 
+**You will need a Docker Hub account**
+
+To build and push our Docker image we use Kaniko, which can build Docker images inside a Kubernetes cluster without depending on a Docker daemon.
+
+Kaniko will build and push the image in the same command. This means before running our task we need to set up credentials for DockerHub so that the docker image can be pushed to the registry.
+
+The credentials are saved in a Kubernetes Secret. 
+
+create a file named 04-secret.yaml with the following content and replace myusername and mypassword with your DockerHub credentials:
+```
+apiVersion: v1
+kind: Secret
+metadata:
+  name: basic-user-pass
+  annotations:
+    tekton.dev/docker-0: https://index.docker.io/v1/
+type: kubernetes.io/basic-auth
+stringData:
+    username: [myusername]
+    password: [mypassword]
+```
+Note: the tekton.dev/docker-0 annotation in the metadata which tells Tekton the Docker registry these credentials belong to.
+
+WARNING: This will write the unencypted credentials to /tekton/home.docker
+
+Next we create a ServiceAccount that uses the basic-user-pass Secret. 
+
+create a file named 05-serviceaccount.yaml with the following content:
+```
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: build-bot
+secrets:
+  - name: basic-user-pass
+```
+apply both files with kubectl:
+```
+kubectl apply -f 04-secret.yaml
+kubectl apply -f 05-serviceaccount.yaml
+```
+Now that the credentials are set up we can continue by creating the Task that will build and push the Docker image.
+
+create a file called 06-task-build-push.yaml with the following content:
+```
+apiVersion: tekton.dev/v1beta1
+kind: Task
+metadata:
+  name: build-and-push
+spec:
+  resources:
+    inputs:
+      - name: repo
+        type: git
+  steps:
+    - name: build-and-push
+      image: gcr.io/kaniko-project/executor:v1.3.0
+      env:
+        - name: DOCKER_CONFIG
+          value: /tekton/home/.docker
+      command:
+        - /kaniko/executor
+        - --dockerfile=Dockerfile
+        - --context=/workspace/repo/src
+        - --destination=jporeilly/tekton-test:v1
+```
+Similarly to the first task this task takes a git repo as an input (the input name is repo) and consists of only a single step since Kaniko builds and pushes the image in the same command.
+
+Make sure to create a DockerHub repository and replace jporeilly/tekton-test with your repository name. In this example it will always tag and push the image with the v1 tag.
+
+Tekton has support for parameters to avoid hardcoding values like this. However to keep this tutorial simple I've left them out...  :)
+
+The DOCKER_CONFIG env var is required for Kaniko to be able to find the Docker credentials.
+
+apply the file with kubectl:
+```
+kubectl apply -f 06-task-build-push.yaml
+```
+There are two ways we can test this Task, either by manually creating a TaskRun definition and then applying it with kubectl or by using the Tekton CLI (tkn).
+
+To run the Task with kubectl we create a TaskRun that looks identical to the previous with the exception that we now specify a ServiceAccount (serviceAccountName) to use when executing the Task.
+
+create a file named 07-taskrun-build-push.yaml with the following content:
+```
+apiVersion: tekton.dev/v1beta1
+kind: TaskRun
+metadata:
+  name: build-and-push
+spec:
+  serviceAccountName: build-bot
+  taskRef:
+    name: build-and-push
+  resources:
+    inputs:
+      - name: repo
+        resourceRef:
+          name: tekton-example
+```
+apply the task and check the log of the Pod by listing all Pods that start with the Task name build-and-push:
+```
+kubectl apply -f 07-taskrun-build-push.yaml
+```
+check Pods:
+```
+kubectl get pods | grep build-and-push
+```
+
+To see the output of the containers we can run the following command. Make sure to replace build-and-push-pod-c698q with the the Pod name from the output above (it will be different for each run).
+```
+kubectl logs --all-containers build-and-push-pod-c698q --follow
+```
+the task executed without problems and we can now pull/run our Docker image:
+```
+docker run [docker-hub-username]/tekton-test:latest
+```
+Running the Task with the Tekton CLI is more convenient. With a single command it generates a TaskRun manifest from the Task definition, applies it, and follows the logs.
+
+```
+tkn task start build-and-push --inputresource repo=tekton-example --serviceaccount build-bot --showlog
+```
 
 
 
