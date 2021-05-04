@@ -92,7 +92,7 @@ k create namespace tasks
 
 ---
 
-**hello world**
+**hello world**  
 Simple Hello World example to show you how to:
 * create a Task
 * use a TaskRun to instantiate and execute a Task outside of a Pipeline
@@ -142,7 +142,7 @@ tkn task start --showlog -p person=James hello -n tasks
 
 ---
 
-**multiple tasks**
+**multiple tasks**  
 Your tasks can have more than one step. In this next example, you will change this Task to use two steps. The first one will write to a file, and the second one will output the content of that file. The steps will run in the order in which they are defined in the steps array.
 
 First, start by adding a new step called write-hello. In here, you will use the same UBI base image. Instead of using a single command, you can also write a script. You can do this with a script parameter, followed by a | and the actual script to run. In this script, start by echoing "Preparing greeting", then echo the "Hello $(params.person)" that you had in the previous example into the ~/hello.txt file. Finally, add a little pause with the sleep command and echo "Done".
@@ -176,7 +176,7 @@ k create namespace pipelines
 
 ---
 
-**hello**
+**hello**  
 A pipeline is a series of tasks that can run either in parallel or sequentially. In this Pipeline, you will use the say-something tasks twice with different outputs.
 
 You can now apply the Task and this new Pipeline to your cluster and start the Pipeline. Using tkn pipeline start will create a PipelineRun with a random name. You can also see the logs of the Pipeline by using the --showlog parameter.
@@ -191,7 +191,7 @@ tkn pipeline start say-things --showlog -n pipelines
 
 ---
 
-**run sequentially or parallel**
+**run sequentially or parallel**  
 For Tasks to run in a specific order, the runAfter parameter is needed in the task definition of your Pipeline.
 The runAfter parameter is being applied to specific numbered tasks, and after applying this Pipeline to our cluster, we’ll be able to see logs from each task, but ordered:
 
@@ -204,7 +204,7 @@ tkn pipeline start say-things-in-order --showlog
 
 ---
 
-**resources**
+**resources**  
 The last object that will be demonstrated in this lab is PipelineResources. When you create pipelines, you will want to make them as generic as you can. This way, your pipelines can be reused across various projects. In the previous examples, we used pipelines that didn't do anything interesting. Typically, you will want to have some input on which you will want to perform your tasks. Usually, this would be a git repository. At the end of your Pipeline, you will also typically want some sort of output. Something like an image. This is where PipelineResources will come into play.
 
 In this next example, you will create a pipeline that will take any git repository as a PipelineResource and then count the number of files.
