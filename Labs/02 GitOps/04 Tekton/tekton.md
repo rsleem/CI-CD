@@ -305,10 +305,82 @@ Running the Task with the Tekton CLI is more convenient. With a single command i
 ```
 tkn task start build-and-push --inputresource repo=tekton-example --serviceaccount build-bot --showlog
 ```
+Now that we have both of our Tasks ready (test, build-and-push) we can create a Pipeline that will run them sequentially: First it will run the application tests and if they pass it will build the Docker image and push it to DockerHub.
 
+create a file named 08-pipeline.yaml with the following content:
+```
+apiVersion: tekton.dev/v1beta1
+kind: Pipeline
+metadata:
+  name: test-build-push
+spec:
+  resources:
+    - name: repo
+      type: git
+  tasks:
+    # Run application tests
+    - name: test
+      taskRef:
+        name: test
+      resources:
+        inputs:
+          - name: repo      # name of the Task input (see Task definition)
+            resource: repo  # name of the Pipeline resource
 
+    # Build docker image and push to registry
+    - name: build-and-push
+      taskRef:
+        name: build-and-push
+      runAfter:
+        - test
+      resources:
+        inputs:
+          - name: repo      # name of the Task input (see Task definition)
+            resource: repo  # name of the Pipeline resource
+```
+The first thing we need to define is what resources our Pipeline requires. A resource can either be an input or an output. In our case we only have an input: the git repo with our application source code. We name the resource repo.
 
+Next we define our tasks. Each task has a taskRef (a reference to a Task) and passes the tasks required inputs.
 
+apply the file with kubectl:
+```
+kubectl apply -f 08-pipeline.yaml
+```
+Similar to how we can run as Task by creating a TaskRun, we can run a Pipeline by creating a PipelineRun.
+
+This can either be done with kubectl or the Tekton CLI. In the following two sections I will show both ways.
+
+To run the file with kubectl we have to create a PipelineRun. 
+create a file named 09-pipelinerun.yaml with the following content:
+```
+apiVersion: tekton.dev/v1beta1
+kind: PipelineRun
+metadata:
+  name: test-build-push-pr
+spec:
+  serviceAccountName: build-bot
+  pipelineRef:
+    name: test-build-push
+  resources:
+  - name: repo
+    resourceRef:
+      name: tekton-example
+```
+apply the file, get the Pods that are prefixed with the PiplelineRun name, and view the logs to get the container output:
+```
+kubectl apply -f 09-pipelinerun.yaml
+kubectl get pods | grep test-build-push-pr
+```
+To see the output of the containers we can run the following command. Make sure to replace test-build-push-pr-build-and-push-gh4f4-pod-nn7k7 with the the Pod name from the output above (it will be different for each run).
+```
+kubectl logs test-build-push-pr-build-and-push-gh4f4-pod-nn7k7 --all-containers --follow
+```
+When using the CLI we don't have to write a PipelineRun, it will be generated from the Pipeline manifest. By using the --showlog argument it will also display the Task (container) logs:
+```
+tkn pipeline start test-build-push --resource repo=arthurk-tekton-example --serviceaccount build-bot --showlog
+```
+
+---
 
 
 clean up:
