@@ -71,5 +71,29 @@ jobs:
 * then add this workflow - hello-world.yaml - to the hello-world/.github/workflows/  directory:
 
 ```
-
+name: 01 Hello World 
+on: [push]
+jobs:
+  run-shell-command:
+    runs-on: ubuntu-latest
+    steps: 
+      - name: Echo a string
+        run: echo "Hello World"
+      - name: Multiline script 
+        run: |
+           node -v 
+           npm -v
 ```
+* This will trigger a push event.
+* On GitHub, navigate to the main page of the repository.
+* Under your repository name, click Actions.
+
+
+**hello world - Marketplace**
+* create a new branch for the workflow: marketplace
+* click on the Actions tab
+* click on the New Workflow
+* select 'Simple Workflow'
+* deploy to main
+
+---
