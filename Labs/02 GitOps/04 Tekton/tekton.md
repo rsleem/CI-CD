@@ -52,7 +52,8 @@ verify installation:
 kubectl get pods --namespace tekton-pipelines
 ```
 
-**Tekton CLI**
+**Tekton CLI**  
+
 install Tekton CLI:
 ```
 curl -LO https://github.com/tektoncd/cli/releases/download/v0.17.2/tkn_0.17.2_Linux_x86_64.tar.gz
@@ -77,7 +78,7 @@ access the Dashboard is using kubectl port-forward:
 kubectl --namespace tekton-pipelines port-forward svc/tekton-dashboard 9097:9097
 ```
 
-  > view dashboard: http://localhost:9097
+  > view Tekton dashboard: http://localhost:9097
 
 ---
 
@@ -156,7 +157,7 @@ spec:
 ```
 This will take our Task (taskRef is a reference to our previously created task name: test) with our tekton-demo git repo as an input (resourceRef is a reference to our PipelineResource name:: tekton-example) and execute it.
 
-Apply the file with kubectl and then check the Pods and TaskRun resources. The Pod will go through the Init:0/2 and PodInitializing status and then succeed:
+apply the file with kubectl and then check the Pods and TaskRun resources. The Pod will go through the Init:0/2 and PodInitializing status and then succeed:
 ```
 kubectl apply -f 03-taskrun.yaml
 ```
@@ -377,7 +378,7 @@ kubectl logs test-build-push-pr-build-and-push-gh4f4-pod-nn7k7 --all-containers 
 ```
 When using the CLI we don't have to write a PipelineRun, it will be generated from the Pipeline manifest. By using the --showlog argument it will also display the Task (container) logs:
 ```
-tkn pipeline start test-build-push --resource repo=arthurk-tekton-example --serviceaccount build-bot --showlog
+tkn pipeline start test-build-push --resource repo=tekton-example --serviceaccount build-bot --showlog
 ```
 
 ---
