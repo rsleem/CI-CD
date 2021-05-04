@@ -137,11 +137,11 @@ log in to Docker Hub:
 ```
 sudo docker login
 ```
-you can set the Docker Hub or push it later:
+you can set the Docker Hub registry name or push it later:
 
 set Skaffold’s global repository config:
 ```
-skaffold config set default-repo [name of repo]
+skaffold config set default-repo [name of Docker Hub registry]
 ```
 build a skaffold.yaml:
 ```
@@ -158,9 +158,9 @@ skaffold dev --no-prune=false --cache-artifacts=false
 ```
 push the image to a docker repository accessible to GitHub. It could be the private docker image repository in GitHub or any other repository which is accessible to GitLab.
 
-rename local image:
+rename local image (you may need sudo):
 ```
-sudo docker tag [local-image-name:tagname] [reponame:tag]
+sudo docker tag [local-image-name:tagname] [Docker Hub registry name:tag]
 sudo docker tag skaffold-example:3fddbc1-dirty jporeilly/skaffold-example:v1
 ```
 push the image to registry:
@@ -173,11 +173,10 @@ validate the image:
 docker images
 ```
 from the image create a deployment manifest:
-
-kubectl create deployment skaffold-example -o K8s-skaffold-deployment.yaml --image=gcr.io/jporeilly/skaffold-example:v1 dry-run 
-
-
-
+```
+kubectl create deployment skaffold-example -o yaml > k8s-pod-deployment.yaml --image=gcr.io/jporeilly/skaffold-example:v1 --dry-run=client 
+```
+These will need to be tidied up..! then pushed to a GitHub repository.
 
   > further examples can be found at: https://github.com/GoogleContainerTools/skaffold
 
