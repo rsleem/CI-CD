@@ -8,7 +8,7 @@ metadata:
 type: Opaque
 stringData:
   username: jporeilly
-  password: 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 ## INSERT TOKEN HERE
+  password: Pentaho2020# ## INSERT TOKEN HERE
 ---
 apiVersion: v1
 kind: ConfigMap

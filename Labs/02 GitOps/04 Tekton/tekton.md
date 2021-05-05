@@ -182,7 +182,7 @@ tkn task start test --inputresource repo=tekton-example --showlog
 
 ---
 
-#### <font color='red'>4.3.3 Tekton Piepline - Docker</font>
+#### <font color='red'>4.3.3 Tekton Pipeline - Docker</font>
 In our second tekton pipeline a Go application simply prints the sum of two integers.
 * build a Docker image for our Go application and push it to DockerHub
 
@@ -386,7 +386,8 @@ tkn pipeline start test-build-push --resource repo=tekton-example --serviceaccou
 
 clean up:
 ```
-delete-local-cluster.sh
+minikube stop
+minikube delete
 ```
 
 ---
