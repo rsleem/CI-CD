@@ -13,7 +13,7 @@ spec:
     - name: url-gitops
       value: 'https://github.com/jporeilly/tekton-argocd-poc'
     - name: branch
-      value: master
+      value: main
     - name: working-dir
       value: '/resources/sources-repo/services/products'
     - name: sonar-url
