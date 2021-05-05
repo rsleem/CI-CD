@@ -110,7 +110,7 @@ access the pipline:
 ---
 
 
-## <font color='red'>CI-Pipeline</font>
+### <font color='red'>CI-Pipeline</font>
 This POC illustrates GitOps CI/CD pipelines. 
 
 CI stages implemented by Tekton:
@@ -137,8 +137,9 @@ directory used to manage the two repositories (code and gitops):
 * sources-repo: source code of the app 
 * gitops-repo: repository used for Kubernetes deployment YAML files.
 
+---
 
-## <font color='red'>Troubleshoot</font>
+### <font color='red'>Troubleshoot</font>
 * ensure centos is the owner
 ```
 cd tekton-argocd-poc
