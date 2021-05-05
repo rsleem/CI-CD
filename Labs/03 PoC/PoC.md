@@ -7,8 +7,8 @@ In this Lab you will:
 * install Nexus
 * install SonarQube
 
-* create a Task
-* run the Task - Taskrun
+
+* create a CI Pipeline
 
 For those of you that want to have some fun, SonarQube and Nexus have also been installed and configured.
 
@@ -35,7 +35,7 @@ password: admin123
 
 ---
 
-#### <font color='red'>3.1.1 Install k3s Rancher</font>
+#### <font color='red'>Pre-requisites Install k3s Rancher</font>
 k3d is a lightweight wrapper to run k3s (Rancher Lab’s minimal Kubernetes distribution) in docker.
 k3d makes it very easy to create single- and multi-node k3s clusters in docker, e.g. for local development on Kubernetes.
 
@@ -53,7 +53,7 @@ create k3d cluster:
 
 ---
 
-#### <font color='red'>3.1.2 Install Tekton + Argo CD</font>
+#### <font color='red'>Pre-requisites Install Tekton + Argo CD</font>
 Theres a script:
 * Installs Tekton + Argo CD, including secrets to access to Git repo
 * Creates the volume and claim necessary to execute pipelines
@@ -67,9 +67,19 @@ run the script:
 ```
 ** Be patient. The process takes some minutes. Ignore the Nexus error. It will continue..  :)
 
+* Creates the configmap associated to Maven settings.xml, ready to publish artifacts in Nexus (with user and password)
+* Installs Tekton tasks and pipelines 
+* Git-clone (from Tekton Hub)
+* Maven (from Tekton Hub)
+* Buildah (from Tekton Hub) - builds OCI images
+* Prepare Image (custom task: poc/conf/tekton/tasks/prepare-image-task.yaml)
+* Push to GitOps repo (custom task: poc/conf/tekton/tasks/push-to-gitops-repo.yaml)
+* Installs Argo CD application, configured to check changes in GitOps repository (resources/gitops_repo)
+
+
 ---
 
-#### <font color='red'>3.1.3 Access Argo CD + Tekton</font>
+#### <font color='red'>Access Argo CD + Tekton</font>
 to access the ArgoD dashboard:
 ```
 kubectl port-forward svc/argocd-server -n argocd 9070:443
@@ -96,14 +106,11 @@ access the pipline:
 
   > in browser: http://[external-ip]:9097
 
----
-
-
 
 ---
 
 
-## <font color='red'>ArgoCD + Tekton POC</font>
+## <font color='red'>CI-Pipeline</font>
 This POC illustrates GitOps CI/CD pipelines. 
 
 CI stages implemented by Tekton:
@@ -131,7 +138,7 @@ directory used to manage the two repositories (code and gitops):
 * gitops-repo: repository used for Kubernetes deployment YAML files.
 
 
-## <font color='red'>Pre-requsites</font>
+## <font color='red'>Troubleshoot</font>
 * ensure centos is the owner
 ```
 cd tekton-argocd-poc
@@ -144,71 +151,8 @@ sudo chmod +x create-local-cluster.sh
 sudo chmod +x delete-local-cluster.sh
 sudo chmod +x setup-poc.sh
 ```
-* install tekton CLI
-```
-curl -LO https://github.com/tektoncd/cli/releases/download/v0.17.2/tkn_0.17.2_Linux_x86_64.tar.gz
-sudo tar xvzf tkn_0.17.2_Linux_x86_64.tar.gz -C /usr/local/bin/ tkn
-```
-
-* Creates the configmap associated to Maven settings.xml, ready to publish artifacts in Nexus (with user and password)
-* Installs Tekton tasks and pipelines - added later in POC
-* Git-clone (from Tekton Hub)
-* Maven (from Tekton Hub)
-* Buildah (from Tekton Hub) - builds OCI images
-* Prepare Image (custom task: poc/conf/tekton/tasks/prepare-image-task.yaml)
-* Push to GitOps repo (custom task: poc/conf/tekton/tasks/push-to-gitops-repo.yaml)
-* Installs Argo CD application, configured to check changes in GitOps repository (resources/gitops_repo)
-
-
-
-to view the pods executing the pipeline:
-```
-kubectl get pods -n cicd -l "tekton.dev/pipelineRun=products-ci-pipelinerun"
-```
-
-
-
-
-
-The application is "healthy" but as the objects associated with Product Service (Pods, Services, Deployment,...etc) aren't still deployed to the Kubernetes cluster sync status is "unknown".
-
-Once the "pipelinerun" ends and changes are pushed to GitOps repository, Argo CD compares content deployed in the Kubernetes cluster (associated to Products Service) with content pushed to the GitOps repository and synchronizes Kubernetes cluster against the repository.
-
-In this dashboard you should be the "product service" application that manages synchronization between Kubernetes cluster and GitOps repository.
-
-
-#### <font color='red'>Access Tekton + Argo CD + Tests</font>
-
-
-**Sonarqube**
-the tests run:
-* SonarQube® is an automatic code review tool to detect bugs, vulnerabilities, and code smells in your code. It can integrate with your existing workflow to enable continuous code inspection across your project branches and pull requests.
-to access Sonarqube to check quality issues:
-
-  > in browser: http://localhost:9000/projects
-
-user: admin
-password: admin123  
-
-**Nexus**
-Nexus is a repository manager. It allows you to proxy, collect, and manage your dependencies so that you are not constantly juggling a collection of JARs.
-
-access Nexus to check how the artifact has been published:
-
-  > in browser: http://localhost:9001
-
-user: admin
-password: admin123 
-
-the last stage in CI part consist on performing a push action to GitOps repository. In this stage, content from GitOps repo is cloned, commit information is updated in cloned files (Kubernentes descriptors) and a push is done. 
-
-watch the video..!
 
 ---
-
-
-
-
 
 clean up:
 ```
