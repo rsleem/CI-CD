@@ -1,15 +1,14 @@
 ## <font color='red'>4.1 Tekton</font>
-Argo CD is a declarative, GitOps continuous delivery tool for Kubernetes.
+Tekton is a flexible Kubernetes-native open-source framework for creating continuous integration and delivery (CI/CD) systems. It lets you build, test, and deploy across multiple cloud providers or on-premises systems by abstracting away the underlying implementation details.
 
 In this lab we're going to:
-* install Tekton
-* install Tekton CLI
+* install Tekton & CLI
 * install Tekton Dashboard on Kubernetes
 
 * run the application tests inside the cloned git repository
 * build a Docker image for our Go application and push it to DockerHub
 
-**The second part requires a Docker Hub account.**
+**The second Lab requires a Docker Hub account.**
 
 ---
 
@@ -40,8 +39,7 @@ minikube tunnel
 
 ---
 
-#### <font color='red'>4.3.1 Install Tekton + CLI</font>
-
+#### <font color='red'>Pre-requisties Install Tekton + CLI + Dashboard</font>
 
 install tekton pipeline:
 ```
@@ -49,15 +47,19 @@ kubectl apply --filename https://storage.googleapis.com/tekton-releases/pipeline
 ```
 verify installation:
 ```
-kubectl get pods --namespace tekton-pipelines
+kubectl get pods --namespace tekton-pipelines --watch
 ```
 
 **Tekton CLI**  
+install Tekton CLI.  
 
-install Tekton CLI:
+Get the tar.gz
 ```
-curl -LO https://github.com/tektoncd/cli/releases/download/v0.17.2/tkn_0.17.2_Linux_x86_64.tar.gz
-sudo tar xvzf tkn_0.17.2_Linux_x86_64.tar.gz -C /usr/local/bin/ tkn
+curl -LO https://github.com/tektoncd/cli/releases/download/v0.18.0/tkn_0.18.0_Linux_x86_64.tar.gz
+```
+extract tkn to your PATH (e.g. /usr/local/bin):
+```
+sudo tar xvzf tkn_0.18.0_Linux_x86_64.tar.gz -C /usr/local/bin/ tkn
 ```
 To run a CI/CD workflow, you need to provide Tekton a Persistent Volume for storage purposes. Tekton requests a volume of 5Gi with the default storage class by default. 
 
@@ -66,6 +68,8 @@ check available persistent volumes and storage classes:
 kubectl get pv
 kubectl get storageclasses
 ```
+* covered later
+
 
 **Tekton Dashboard**
 
@@ -82,7 +86,7 @@ kubectl --namespace tekton-pipelines port-forward svc/tekton-dashboard 9097:9097
 
 ---
 
-#### <font color='red'>4.3.2 Tekton Taskrun</font>
+#### <font color='red'>Tekton Taskrun</font>
 In our first tekton pipeline a Go application simply prints the sum of two integers.
 * run the application tests inside the cloned git repository
 
@@ -182,7 +186,7 @@ tkn task start test --inputresource repo=tekton-example --showlog
 
 ---
 
-#### <font color='red'>4.3.3 Tekton Pipeline - Docker</font>
+#### <font color='red'>Tekton Pipeline - Docker</font>
 In our second tekton pipeline a Go application simply prints the sum of two integers.
 * build a Docker image for our Go application and push it to DockerHub
 
@@ -383,6 +387,151 @@ tkn pipeline start test-build-push --resource repo=tekton-example --serviceaccou
 
 ---
 
+#### <font color='red'>4.1 Tekton Tasks</font>
+Tasks that cover the basics..  
+
+List of Tekton Tasks:
+* helloworld
+* add a parameter
+* multiple steps
+
+  > lots more examples: https://github.com/tektoncd/pipeline/tree/main/examples/v1beta1/taskruns
+
+* ensure you're in the Tasks directory..
+
+create a namespace to run tasks:
+```
+k create namespace tasks 
+```
+
+---
+
+**4.1.1 hello world**  
+Simple Hello World example to show you how to:
+* create a Task
+* use a TaskRun to instantiate and execute a Task outside of a Pipeline
+
+A Task defines a series of steps that run in a desired order and complete a set amount of build work. Every Task runs as a Pod on your Kubernetes cluster with each step as its own container. 
+
+
+* view helloworld-task.yaml
+to register the task:
+```
+kubectl apply -f helloworld-task.yaml -n tasks
+```
+details about your created Task:
+```
+tkn task describe echo-hello-world -n tasks
+```
+* view helloworld-taskrun.yaml
+to run this task:
+```
+kubectl apply -f helloworld-taskrun.yaml -n tasks
+```
+check status:
+```
+tkn taskrun describe echo-hello-world-task-run -n tasks
+```
+* view in Tekton dashboard
+
+---
+
+**4.1.2 add a parameter**
+
+Tasks can also take parameters. This way, you can pass various flags to be used in this Task. These parameters can be instrumental in making your Tasks more generic and reusable across Pipelines.
+
+In this next example, you will create a task that will ask for a person's name and then say Hello to that person.
+
+Starting with the previous example, you can add a params property to your task's spec. A param takes a name and a type. You can also add a description and a default value for this Task.
+
+For this parameter, the name is person, the description is Name of person to greet, the default value is World, and the type of parameter is a string. If you don't provide a parameter to this Task, the greeting will be "Hello World".
+
+You can then access those params by using variable substitution. In this case, change the word "World" in the args line to $(params.person).
+```
+kubectl apply -f 02_add-param/param.yaml -n tasks
+tkn task start --showlog hello -n tasks
+tkn task start --showlog -p person=James hello -n tasks
+```
+* view in Tekton dashboard
+
+---
+
+**4.1.3 multiple tasks**  
+Your tasks can have more than one step. In this next example, you will change this Task to use two steps. The first one will write to a file, and the second one will output the content of that file. The steps will run in the order in which they are defined in the steps array.
+
+First, start by adding a new step called write-hello. In here, you will use the same UBI base image. Instead of using a single command, you can also write a script. You can do this with a script parameter, followed by a | and the actual script to run. In this script, start by echoing "Preparing greeting", then echo the "Hello $(params.person)" that you had in the previous example into the ~/hello.txt file. Finally, add a little pause with the sleep command and echo "Done".
+
+For the second step, you can create a new step called say-hello. This second step will run in its container but share the /tekton folder from the previous step. In the first step, you created a file in the "~" folder, which maps to "/tekton/home". For this second step, you can use an image node:14, and the file you created in the first step will be accessible. You can also run a NodeJS script as long as you specify the executable in the #! line of your script. In this case, you can write a script that will output the content of the ~/hello.txt file.
+```
+kubectl apply -f 03_multi-steps/step.yaml -n tasks
+tkn task start --showlog hello -n tasks
+```
+* view in Tekton dashboard
+
+---
+
+
+#### <font color='red'>4.2 Tekton Pipelines</font>
+Tasks are useful, but you will usually want to run more than one Task. In fact, tasks should do one single thing so you can reuse them across pipelines or even within a single pipeline. For this next example, you will start by writing a generic task that will echo whatever it receives in the parameters.
+
+List of Tekton Pipelines:
+* hello
+* run sequentially or parallel
+* resources
+
+  > lots more examples: https://github.com/tektoncd/pipeline/tree/main/examples/v1beta1/taskruns
+
+* ensure you're in the Pipelines directory..
+
+create a namespace to run pipelines:
+```
+k create namespace pipelines 
+```
+
+---
+
+**4.2.1 hello**  
+A pipeline is a series of tasks that can run either in parallel or sequentially. In this Pipeline, you will use the say-something tasks twice with different outputs.
+
+You can now apply the Task and this new Pipeline to your cluster and start the Pipeline. Using tkn pipeline start will create a PipelineRun with a random name. You can also see the logs of the Pipeline by using the --showlog parameter.
+
+```
+kubectl apply -f 01_hello/tasks.yaml -n pipelines
+kubectl apply -f 01_hello/pipeline.yaml -n pipelines
+tkn pipeline start say-things --showlog -n pipelines
+```
+
+* view in Tekton dashboard
+
+---
+
+**4.2.2 run sequentially or parallel**  
+For Tasks to run in a specific order, the runAfter parameter is needed in the task definition of your Pipeline.
+The runAfter parameter is being applied to specific numbered tasks, and after applying this Pipeline to our cluster, we’ll be able to see logs from each task, but ordered:
+
+```
+kubectl apply -f 02_para-seq/pipeline-order.yaml -n pipelines
+tkn pipeline start say-things-in-order --showlog
+```
+
+* view in Tekton dashboard
+
+---
+
+**4.2.3 resources**  
+The last object that will be demonstrated in this lab is PipelineResources. When you create pipelines, you will want to make them as generic as you can. This way, your pipelines can be reused across various projects. In the previous examples, we used pipelines that didn't do anything interesting. Typically, you will want to have some input on which you will want to perform your tasks. Usually, this would be a git repository. At the end of your Pipeline, you will also typically want some sort of output. Something like an image. This is where PipelineResources will come into play.
+
+In this next example, you will create a pipeline that will take any git repository as a PipelineResource and then count the number of files.
+
+* First, you can start by creating a task. This Task will be similar to the ones you've created earlier but will also have an input resource.
+* Next, you can create a pipeline that will also have an input resource. This Pipeline will have a single task, which will be the count-files task you've just defined.
+* Finally, you can create a PipelineResource. This resource is of type git, and you can put in the link of a Github repository in the url parameter. You can use the repo for this project.
+
+```
+kubectl apply -f pipeline-resource.yaml -n pipeline
+tkn pipeline start count --showlog
+tkn pipeline start count --showlog --resource git-repo=git-repo
+```
 
 clean up:
 ```
