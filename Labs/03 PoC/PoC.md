@@ -86,7 +86,7 @@ kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.pas
 
 to access Tekton dashboard:
 ```
-kubectl patch service tekton-dashboard -n cicd -p '{"spec": {"type": "LoadBalancer"}}'
+kubectl patch service tekton-dashboard -n tekton-pipelines -p '{"spec": {"type": "LoadBalancer"}}'
 ```
 verify external-ip:
 ```
