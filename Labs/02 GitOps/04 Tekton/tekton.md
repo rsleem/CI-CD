@@ -86,7 +86,7 @@ kubectl --namespace tekton-pipelines port-forward svc/tekton-dashboard 9097:9097
 
 ---
 
-#### <font color='red'>Tekton Taskrun</font>
+#### <font color='red'>Tekton - Taskrun</font>
 In our first tekton pipeline a Go application simply prints the sum of two integers.
 * run the application tests inside the cloned git repository
 
@@ -532,6 +532,8 @@ kubectl apply -f pipeline-resource.yaml -n pipeline
 tkn pipeline start count --showlog
 tkn pipeline start count --showlog --resource git-repo=git-repo
 ```
+
+---
 
 clean up:
 ```
