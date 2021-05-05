@@ -10,7 +10,17 @@ In this Lab you will:
 
 * create a CI Pipeline
 
+#### <font color='red'>The CI-pipeline will not execute as GitHub credentials are required to clone the repository.</font>
+The credentials are stored in:
+* poc/conf/argocd/fir-repsoitory.yaml  
+* poc/tekton/git-access/git-access.yaml
+
+If you want give this a go, then you can fork ..  check paths..
+ 
+
 For those of you that want to have some fun, SonarQube and Nexus have also been installed and configured.
+
+  > PoC repository: http://github.com/jporeilly/tekton-argocd-poc
 
 **Sonarqube**
 the tests run:
