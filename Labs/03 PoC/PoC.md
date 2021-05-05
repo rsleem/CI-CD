@@ -1,4 +1,4 @@
-## <font color='red'>3 PoC - Argo CD + Tekton</font>
+## <font color='red'>3.1 PoC - Argo CD + Tekton</font>
 Argo CD watches cluster objects stored in a Git repository and manages the create, update, and delete (CRUD) processes for objects within the repository. Tekton is a CI/CD tool that handles all parts of the development lifecycle, from building images to deploying cluster objects.
 
 In this Lab you will:
