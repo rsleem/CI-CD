@@ -82,13 +82,13 @@ kubectl --namespace tekton-pipelines port-forward svc/tekton-dashboard 9097:9097
 
 ---
 
-#### <font color='red'>4.3.2 Tekton Piepline</font>
+#### <font color='red'>4.3.2 Tekton Taskrun</font>
 In our first tekton pipeline a Go application simply prints the sum of two integers.
 * run the application tests inside the cloned git repository
 
 The required resource files can be found at:
 
-  > Tekton demo repository: http://github.com/jporeilly/Tekton-demo.git
+  > Tekton demo repository: http://github.com/jporeilly/Tekton-demo
 
 create a file called 01-task-test.yaml with the following content:
 ```
@@ -106,7 +106,7 @@ spec:
       image: golang:1.14-alpine
       workingDir: /workspace/repo/src
       command: ["go"]
-      args: ["test"]`
+      args: ["test"]
 ```
 The resources: block defines the inputs that our task needs to execute its steps. Our step (name: run-test) needs the cloned tekton-demo git repository as an input and we can create this input with a PipelineResource.  
 
@@ -128,9 +128,9 @@ spec:
   type: git
   params:
     - name: url
-      value: https://github.com/jporeilly/tekton-demo
+      value: https://github.com/jporeilly/Tekton-demo
     - name: revision
-      value: master
+      value: main
 ```
 
 apply the Task and the PipelineResource with kubectl:
@@ -299,7 +299,7 @@ kubectl logs --all-containers build-and-push-pod-c698q --follow
 ```
 the task executed without problems and we can now pull/run our Docker image:
 ```
-docker run [docker-hub-username]/tekton-test:latest
+docker run [docker-hub-username]/tekton-test:v1
 ```
 Running the Task with the Tekton CLI is more convenient. With a single command it generates a TaskRun manifest from the Task definition, applies it, and follows the logs.
 
