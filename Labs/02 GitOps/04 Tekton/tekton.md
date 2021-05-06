@@ -383,7 +383,7 @@ tkn pipeline start test-build-push --resource repo=tekton-example --serviceaccou
 ---
 
 
-#### <font color='red'>2.3.4 Further Tekton Tasks</font>
+#### <font color='red'>2.4.4 Further Tekton Tasks</font>
 List of Tekton Tasks:
 * helloworld
 * add a parameter
@@ -465,7 +465,7 @@ tkn task start --showlog hello -n tasks
 ---
 
 
-#### <font color='red'>2.3.5 More Tekton Pipelines</font>
+#### <font color='red'>2.4.5 More Tekton Pipelines</font>
 Tasks are useful, but you will usually want to run more than one Task. In fact, tasks should do one single thing so you can reuse them across pipelines or even within a single pipeline. For this next example, you will start by writing a generic task that will echo whatever it receives in the parameters.
 
 List of Tekton Pipelines:

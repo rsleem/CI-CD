@@ -1,5 +1,5 @@
-## <font color='red'>3.1 PoC - Argo CD + Tekton</font>
-Argo CD watches cluster objects stored in a Git repository and manages the create, update, and delete (CRUD) processes for objects within the repository. Tekton is a CI/CD tool that handles all parts of the development lifecycle, from building images to deploying cluster objects.
+## <font color='red'>PoC - CI/CD Pipelines</font>
+Continuous integration is a coding philosophy and set of practices that drive development teams to implement small changes and check in code to version control repositories frequently. Because most modern applications require developing code in different platforms and tools, the team needs a mechanism to integrate and validate its changes.
 
 In this Lab you will:
 * install k3s Rancher
@@ -36,7 +36,10 @@ password: admin123
 
 ---
 
-#### <font color='red'>3.1.1 Install k3s Rancher</font>
+#### <font color='red'>Pre-requistes</font>
+
+**Install k3s Rancher**  
+
 k3d is a lightweight wrapper to run k3s (Rancher Lab’s minimal Kubernetes distribution) in docker.
 k3d makes it very easy to create single- and multi-node k3s clusters in docker, e.g. for local development on Kubernetes.
 
@@ -52,14 +55,11 @@ create k3d cluster:
 ./create-local-cluster.sh
 ```
 
-
-
-
-
 ---
 
-#### <font color='red'>3.3.2 Install Argo CD + Tekton</font>
-Theres a script:
+**Install Nexus + Argo CD + Tekton + DashBoard + SonarQube**
+
+The setup script:
 * Installs Tekton + Argo CD, including secrets to access to Git repo
 * Creates the volume and claim necessary to execute pipelines
 * Deploys Tekton dashboard
@@ -74,7 +74,7 @@ run the script:
 
 ---
 
-#### <font color='red'>3.3.3 Access Argo CD + Tekton</font>
+#### <font color='red'>Access Argo CD + Tekton</font>
 to access the ArgoD dashboard:
 ```
 kubectl port-forward svc/argocd-server -n argocd 9070:443
