@@ -13,27 +13,6 @@ This pipeline will not execute..  its intended to illustrate how to setup a pipe
 
 If you don't want to bother sorting that out :) then just delete the Tasks, Pipeline, Pipelineruns, etc and you have a testing environment.
 
-**Sonarqube**
-the tests run:
-* SonarQube® is an automatic code review tool to detect bugs, vulnerabilities, and code smells in your code. It can integrate with your existing workflow to enable continuous code inspection across your project branches and pull requests.
-to access Sonarqube to check quality issues:
-
-  > in browser: http://localhost:9000/projects
-
-user: admin
-password: admin123  
-
-**Nexus**
-* Nexus is a repository manager. It allows you to proxy, collect, and manage your dependencies so that you are not constantly juggling a collection of JARs.
-
-access Nexus to check the artifact has been published:
-
-  > in browser: http://localhost:9001
-
-user: admin
-password: admin123 
-
-
 ---
 
 #### <font color='red'>Pre-requistes</font>
@@ -102,6 +81,34 @@ access the pipline:
   > in browser: http://[external-ip]:9097
 
 ---
+
+
+
+
+
+**Nexus**
+* Nexus is a repository manager. It allows you to proxy, collect, and manage your dependencies so that you are not constantly juggling a collection of JARs.
+
+access Nexus to check the artifact has been published:
+
+  > in browser: http://localhost:9001
+
+user: admin
+password: admin123 
+
+
+**Sonarqube**
+the tests run:
+* SonarQube® is an automatic code review tool to detect bugs, vulnerabilities, and code smells in your code. It can integrate with your existing workflow to enable continuous code inspection across your project branches and pull requests.
+to access Sonarqube to check quality issues:
+
+  > in browser: http://localhost:9000/projects
+
+user: admin
+password: admin123  
+
+---
+
 
 
 
@@ -178,38 +185,6 @@ The application is "healthy" but as the objects associated with Product Service 
 Once the "pipelinerun" ends and changes are pushed to GitOps repository, Argo CD compares content deployed in the Kubernetes cluster (associated to Products Service) with content pushed to the GitOps repository and synchronizes Kubernetes cluster against the repository.
 
 In this dashboard you should be the "product service" application that manages synchronization between Kubernetes cluster and GitOps repository.
-
-
-#### <font color='red'>Access Tekton + Argo CD + Tests</font>
-
-
-**Sonarqube**
-the tests run:
-* SonarQube® is an automatic code review tool to detect bugs, vulnerabilities, and code smells in your code. It can integrate with your existing workflow to enable continuous code inspection across your project branches and pull requests.
-to access Sonarqube to check quality issues:
-
-  > in browser: http://localhost:9000/projects
-
-user: admin
-password: admin123  
-
-**Nexus**
-Nexus is a repository manager. It allows you to proxy, collect, and manage your dependencies so that you are not constantly juggling a collection of JARs.
-
-access Nexus to check how the artifact has been published:
-
-  > in browser: http://localhost:9001
-
-user: admin
-password: admin123 
-
-the last stage in CI part consist on performing a push action to GitOps repository. In this stage, content from GitOps repo is cloned, commit information is updated in cloned files (Kubernentes descriptors) and a push is done. 
-
-watch the video..!
-
----
-
-
 
 
 
