@@ -9,6 +9,32 @@ In this Lab you will:
 
 * examine a prebuilt ci-pipeline..
 
+CI stages implemented by Tekton:
+* Checkout: in this stage, source code repository is cloned
+* Build & Test: in this stage, we use Maven to build and execute test
+* Code Analisys: code is evaluated by Sonarqube
+* Publish: if everything is ok, artifact is published to Nexus
+* Build image: in this stage, we build the image and publish to local registry
+* Push to GitOps repo: this is the final CI stage, in which Kubernetes descriptors are cloned from the GitOps repository, they are modified in order to insert commit info and then, a push action is performed to upload changes to GitOps repository.
+
+CD stages implemented by ArgoCD:
+* Argo CD detects that the repository has changed and perform the sync action against the Kubernetes cluster.
+
+
+GitHub directory structure:  
+
+**poc:**   
+this is the main directory. contains 3 scripts:
+* create-local-cluster.sh: this script creates a local Kubernetes cluster based on K3D.
+* delete-local-cluster.sh: this script removes the local cluster
+* setup-poc.sh: this script installs and configure everything neccessary in the cluster (Tekton, Argo CD, Nexus, SonarQube, etc...)
+  
+**resources:**   
+directory used to manage the two repositories (code and gitops):
+* sources-repo: source code of the app 
+* gitops-repo: repository used for Kubernetes deployment YAML files.
+
+
 This pipeline will not execute..  its intended to illustrate how to setup a pipeline that runs some tests and pushes out an iamge to a local Nexus registry.  If you want to give this a go..  then you can fork or setup your own repository (you will need to change URL paths)..  obviously then you can enter your own GitHub credentials..
 
 If you don't want to bother sorting that out :) then just delete the Tasks, Pipeline, Pipelineruns, etc and you have a testing environment.
@@ -83,8 +109,7 @@ access the pipline:
 ---
 
 
-
-
+#### <font color='red'>Access Nexus + SonarQube</font>
 
 **Nexus**
 * Nexus is a repository manager. It allows you to proxy, collect, and manage your dependencies so that you are not constantly juggling a collection of JARs.
@@ -111,55 +136,6 @@ password: admin123
 
 
 
-
-
-## <font color='red'>ArgoCD + Tekton POC</font>
-This POC illustrates GitOps CI/CD pipelines. 
-
-CI stages implemented by Tekton:
-* Checkout: in this stage, source code repository is cloned
-* Build & Test: in this stage, we use Maven to build and execute test
-* Code Analisys: code is evaluated by Sonarqube
-* Publish: if everything is ok, artifact is published to Nexus
-* Build image: in this stage, we build the image and publish to local registry
-* Push to GitOps repo: this is the final CI stage, in which Kubernetes descriptors are cloned from the GitOps repository, they are modified in order to insert commit info and then, a push action is performed to upload changes to GitOps repository.
-
-CD stages implemented by ArgoCD:
-* Argo CD detects that the repository has changed and perform the sync action against the Kubernetes cluster.
-
-directory structure:  
-
-**poc:**   
-this is the main directory. contains 3 scripts:
-* create-local-cluster.sh: this script creates a local Kubernetes cluster based on K3D.
-* delete-local-cluster.sh: this script removes the local cluster
-* setup-poc.sh: this script installs and configure everything neccessary in the cluster (Tekton, Argo CD, Nexus, SonarQube, etc...)
-  
-**resources:**   
-directory used to manage the two repositories (code and gitops):
-* sources-repo: source code of the app 
-* gitops-repo: repository used for Kubernetes deployment YAML files.
-
-
-## <font color='red'>Pre-requsites</font>
-* ensure centos is the owner
-```
-cd tekton-argocd-poc
-sudo chown -R centos:centos tekton-argocd-poc
-```
-* ensure the following files are +x
-```
-cd tekton-argocd-poc/poc
-sudo chmod +x create-local-cluster.sh
-sudo chmod +x delete-local-cluster.sh
-sudo chmod +x setup-poc.sh
-```
-* install tekton CLI
-```
-curl -LO https://github.com/tektoncd/cli/releases/download/v0.17.2/tkn_0.17.2_Linux_x86_64.tar.gz
-sudo tar xvzf tkn_0.17.2_Linux_x86_64.tar.gz -C /usr/local/bin/ tkn
-```
-
 * Creates the configmap associated to Maven settings.xml, ready to publish artifacts in Nexus (with user and password)
 * Installs Tekton tasks and pipelines - added later in POC
 * Git-clone (from Tekton Hub)
@@ -178,19 +154,22 @@ kubectl get pods -n cicd -l "tekton.dev/pipelineRun=products-ci-pipelinerun"
 
 
 
-
-
-The application is "healthy" but as the objects associated with Product Service (Pods, Services, Deployment,...etc) aren't still deployed to the Kubernetes cluster sync status is "unknown".
-
-Once the "pipelinerun" ends and changes are pushed to GitOps repository, Argo CD compares content deployed in the Kubernetes cluster (associated to Products Service) with content pushed to the GitOps repository and synchronizes Kubernetes cluster against the repository.
-
-In this dashboard you should be the "product service" application that manages synchronization between Kubernetes cluster and GitOps repository.
-
-
-
 clean up:
 ```
 delete-local-cluster.sh
 ```
 
 ---
+
+
+
+```
+* install tekton CLI
+```
+curl -LO https://github.com/tektoncd/cli/releases/download/v0.17.2/tkn_0.17.2_Linux_x86_64.tar.gz
+sudo tar xvzf tkn_0.17.2_Linux_x86_64.tar.gz -C /usr/local/bin/ tkn
+```
+
+
+
+
