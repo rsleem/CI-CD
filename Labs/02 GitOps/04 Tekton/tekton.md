@@ -473,7 +473,7 @@ List of Tekton Pipelines:
 * run sequentially or parallel
 * resources
 
-> lots more examples: https://github.com/tektoncd/pipeline/tree/main/examples/v1beta1/taskruns
+> lots more examples: https://github.com/tektoncd/pipeline/tree/main/examples/v1beta1/pipelineruns
 
 * ensure you're in the Pipelines directory..
 
