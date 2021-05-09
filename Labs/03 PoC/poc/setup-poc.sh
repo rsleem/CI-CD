@@ -28,9 +28,9 @@ initK8SResources() {
   kubectl apply -f https://github.com/tektoncd/dashboard/releases/latest/download/tekton-dashboard-release.yaml
   kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
 
-  echo '-------------------------------------------------'
-  echo 'Be patient... Lots of Pods are being created.. '
-  echo '-------------------------------------------------'
+  echo "---------------------------------------------------------------------------------"
+  echo "Be patient... Lots of Pods are being created.. I'll update you in about 10secs.."
+  echo "---------------------------------------------------------------------------------"
 
   while [[ $(kubectl get pods -l 'app in (nexus)' --all-namespaces -o 'jsonpath={..status.conditions[?(@.type=="Ready")].status}') != "True" ]]; do echo "waiting for Nexus Pods..." && sleep 10; done
   while [[ $(kubectl get pods -l 'app in (sonarqube)' --all-namespaces -o 'jsonpath={..status.conditions[?(@.type=="Ready")].status}') != "True" ]]; do echo "waiting for SonarQube Pods..." && sleep 10; done
@@ -87,7 +87,7 @@ waitForNexusReady() {
 
   echo "Here's Nexus Pod name: $nexus_pod_name"
   echo ""
-  printf 'Waiting for Nexus to kick off...'
+  printf 'Waiting for Nexus to kick off...  just adding admin password'
   while [[ ! $(kubectl exec "$nexus_pod_name" -n cicd -- cat /nexus-data/admin.password) ]] ;do
     printf '.'
     sleep 10
@@ -95,7 +95,7 @@ waitForNexusReady() {
 
   nexus_original_admin_pwd=$(kubectl exec "$nexus_pod_name" -n cicd -- cat /nexus-data/admin.password)
   echo " Nexus admin pass: $nexus_original_admin_pwd"
-  echo " Nexus ready..."
+  echo " Nexus now ready..."
 }
 
 setupNexus() {
