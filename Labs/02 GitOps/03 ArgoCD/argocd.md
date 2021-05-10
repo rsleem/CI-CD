@@ -1,4 +1,4 @@
-## <font color='red'> 2.2 ArgoCD </font>
+## <font color='red'> 2.3 Argo CD </font>
 Argo CD is a declarative, GitOps continuous delivery tool for Kubernetes.
 
 In this lab we're going to:
@@ -34,7 +34,7 @@ minikube tunnel
 
 ---
 
-#### <font color='red'> 2.2.1 Install ArgoCD </font>
+#### <font color='red'> 2.3.1 Install ArgoCD </font>
 The next step is to: 
 * install ArgoCD
 
@@ -73,7 +73,7 @@ kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.pas
 
 ---
 
-#### <font color='red'> 2.2.2 Deploy a Guestbook App </font>
+#### <font color='red'> 2.3.2 Deploy a Guestbook App </font>
 There are a couple of apps you can deploy at: http://github.com/jporeilly/ArgoCD-demos.git
 * guestbook - kubectl
 * guestbook - kustomize
