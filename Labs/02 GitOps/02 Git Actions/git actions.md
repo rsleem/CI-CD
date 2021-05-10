@@ -89,6 +89,44 @@ jobs:
 * Under your repository name, click Actions.
 
 
+**different shells**
+* create a new branch for the workflow: different-shells
+* then add this workflow - different-shells.yaml - to the different-shells/.github/workflows/  directory:
+
+```
+name: 02 Different Shells 
+on: [push]
+jobs:
+  run-shell-command:
+    runs-on: ubuntu-latest
+    steps: 
+      - name: echo a string
+        run: echo "Hello World"
+      - name: multiline script 
+        run: |
+           node -v 
+           npm -v
+      - name: python Command 
+        run: |
+          import platform 
+          print
+          (platform.processor())
+        shell: python
+  run-windows-command:
+    runs-on: windows-latest
+    needs: ["run-shell-command"]
+    steps:
+      - name: Directory PowerShell
+        run: Get-Location 
+      - name: Directory Bash 
+        run: pwd 
+        shell: bash 
+```
+* This will trigger a push event.
+* On GitHub, navigate to the main page of the repository.
+* Under your repository name, click Actions.
+
+
 **hello world - Marketplace**
 * create a new branch for the workflow: marketplace
 * click on the Actions tab
