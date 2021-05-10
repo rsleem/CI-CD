@@ -28,9 +28,9 @@ initK8SResources() {
   kubectl apply -f https://github.com/tektoncd/dashboard/releases/latest/download/tekton-dashboard-release.yaml
   kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
 
-  echo '-------------------------------------------------'
-  echo 'Be patient... Lots of Pods are being created.. '
-  echo '-------------------------------------------------'
+  echo "---------------------------------------------------------------------------------"
+  echo "Be patient... Lots of Pods are being created.. I'll update you in about 10secs.."
+  echo "---------------------------------------------------------------------------------"
 
   while [[ $(kubectl get pods -l 'app in (nexus)' --all-namespaces -o 'jsonpath={..status.conditions[?(@.type=="Ready")].status}') != "True" ]]; do echo "waiting for Nexus Pods..." && sleep 10; done
   while [[ $(kubectl get pods -l 'app in (sonarqube)' --all-namespaces -o 'jsonpath={..status.conditions[?(@.type=="Ready")].status}') != "True" ]]; do echo "waiting for SonarQube Pods..." && sleep 10; done
@@ -40,30 +40,33 @@ initK8SResources() {
 
 # set Nexus account
 setAnonymousAccessAllowed() {
-  echo "   ---> Anonymous access allowed: start"
+  echo "Anonymous access allowed: start"
+  echo ""
   curl -d "@conf/k8s/data/anonymous_data.json" -H "Content-Type: application/json" --location --request PUT "$nexus_api_base_url/security/anonymous" --user "$nexus_admin_user:$nexus_original_admin_pwd" | true
-  echo "   ---> Anonymous access allowed: end"
+  echo "We're in..   Anonymous access allowed: end"
 }
 
 # change Nexus password
 updateAdminPassword() {
-  echo "   ---> Admin password updated: start"
+  echo "Admin password updated: start"
+  echo ""
   curl --data-raw "$nexus_final_admin_password" -H "Content-Type: text/plain" --location --request PUT "$nexus_api_base_url/security/users/$nexus_admin_user/change-password" --user "$nexus_admin_user:$nexus_original_admin_pwd" | true
-  echo "   ---> Admin password updated: end"
+  echo "Nexus Admin password updated: end"
 }
 
 removeTemporalFiles() {
   nexus_pod_name=$(kubectl get pod -l app=nexus -n cicd --template '{{range .items}}{{.metadata.name}}{{"\n"}}{{end}}')
-  echo "   ---> Nexus pod name: $nexus_pod_name"
+  echo "Up and running.... Nexus pod name: $nexus_pod_name"
+  echo ""
   kubectl exec "$nexus_pod_name" -n cicd -- rm -rf /nexus-data/tmp
-  echo "   ---> Removed tmp files"
+  echo "Removed tmp files"
 }
 
 waitForNexusAPIBeReady() {
   attempt_counter=0
   max_attempts=10
   nexus_api_repositories="$nexus_api_base_url/repositories"
-  printf '   ---> Waiting for Nexus API be ready (%s)' "$nexus_api_repositories"
+  printf 'Still waiting for Nexus API be ready (%s)' "$nexus_api_repositories"
 
   until [[ $(curl -I --silent -o /dev/null -w %{http_code} "$nexus_api_repositories") =~ 2[0-9][0-9]  ]] ;do
       if [ ${attempt_counter} -eq ${max_attempts} ];then
@@ -82,8 +85,9 @@ waitForNexusReady() {
   nexus_api_base_url="http://$nexus_local_ip:$nexus_port/service/rest/v1"
   nexus_pod_name=$(kubectl get pod -l app=nexus -n cicd --template '{{range .items}}{{.metadata.name}}{{"\n"}}{{end}}')
 
-  echo "   ---> Nexus pod name: $nexus_pod_name"
-  printf '   ---> Waiting for Nexus...'
+  echo "Here's Nexus Pod name: $nexus_pod_name"
+  echo ""
+  printf 'Waiting for Nexus to kick off...  just adding admin password'
   while [[ ! $(kubectl exec "$nexus_pod_name" -n cicd -- cat /nexus-data/admin.password) ]] ;do
     printf '.'
     sleep 10
@@ -91,7 +95,7 @@ waitForNexusReady() {
 
   nexus_original_admin_pwd=$(kubectl exec "$nexus_pod_name" -n cicd -- cat /nexus-data/admin.password)
   echo " Nexus admin pass: $nexus_original_admin_pwd"
-  echo " Nexus ready..."
+  echo " Nexus now ready..."
 }
 
 setupNexus() {
@@ -115,6 +119,7 @@ installPoCResources() {
   kubectl apply -f conf/tekton/pipelines -n cicd
 }
 
+# show the login details
 showInfo() {
   echo ""
   echo ""
