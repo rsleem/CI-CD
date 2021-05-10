@@ -135,41 +135,9 @@ password: admin123
 ---
 
 
-
-* Creates the configmap associated to Maven settings.xml, ready to publish artifacts in Nexus (with user and password)
-* Installs Tekton tasks and pipelines - added later in POC
-* Git-clone (from Tekton Hub)
-* Maven (from Tekton Hub)
-* Buildah (from Tekton Hub) - builds OCI images
-* Prepare Image (custom task: poc/conf/tekton/tasks/prepare-image-task.yaml)
-* Push to GitOps repo (custom task: poc/conf/tekton/tasks/push-to-gitops-repo.yaml)
-* Installs Argo CD application, configured to check changes in GitOps repository (resources/gitops_repo)
-
-
-
-to view the pods executing the pipeline:
-```
-kubectl get pods -n cicd -l "tekton.dev/pipelineRun=products-ci-pipelinerun"
-```
-
-
-
 clean up:
 ```
-delete-local-cluster.sh
+./delete-local-cluster.sh
 ```
 
 ---
-
-
-
-```
-* install tekton CLI
-```
-curl -LO https://github.com/tektoncd/cli/releases/download/v0.17.2/tkn_0.17.2_Linux_x86_64.tar.gz
-sudo tar xvzf tkn_0.17.2_Linux_x86_64.tar.gz -C /usr/local/bin/ tkn
-```
-
-
-
-
