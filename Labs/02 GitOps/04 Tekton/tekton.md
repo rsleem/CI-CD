@@ -1,5 +1,5 @@
 ## <font color='red'>2.4 Tekton</font>
-Argo CD is a declarative, GitOps continuous delivery tool for Kubernetes.
+Tekton is a powerful and flexible open-source framework for creating CI/CD systems, allowing developers to build, test, and deploy across cloud providers and on-premise systems.
 
 In this lab we're going to:
 * install Tekton
