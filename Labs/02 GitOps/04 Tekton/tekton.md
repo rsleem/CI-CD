@@ -82,7 +82,7 @@ kubectl --namespace tekton-pipelines port-forward svc/tekton-dashboard 9097:9097
 ---
 
 #### <font color='red'>2.4.2 Tekton Taskrun</font>
-In our first tekton pipeline a Go application simply prints the sum of two integers.
+In our first tekton taskRun a Go application simply prints the sum of two integers.
 * run the application tests inside the cloned git repository
 
 The required resource files can be found at:
@@ -154,7 +154,7 @@ spec:
         resourceRef:
           name: tekton-example
 ```
-This will take our Task (taskRef is a reference to our previously created task name: test) with our tekton-demo git repo as an input (resourceRef is a reference to our PipelineResource name:: tekton-example) and execute it.
+This will take our Task (taskRef is a reference to our previously created task name: test) with our tekton-demo git repo as an input (resourceRef is a reference to our PipelineResource name: tekton-example) and execute it.
 
 apply the file with kubectl and then check the Pods and TaskRun resources. The Pod will go through the Init:0/2 and PodInitializing status and then succeed:
 ```
