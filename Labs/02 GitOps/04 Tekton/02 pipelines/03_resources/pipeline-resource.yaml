@@ -13,7 +13,7 @@ spec:
       image: ubuntu
       command:
         - /bin/bash
-      args: ['-c', 'echo $(find ./code -type f | wc -l) files in repo']
+      args: ['-c', 'echo $(find ./ -type f | wc -l) files in repo']
 ---
 apiVersion: tekton.dev/v1beta1
 kind: Pipeline
